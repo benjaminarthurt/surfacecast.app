@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Features - SurfaceCast</title>
+<meta name="description" content="Scenes, layers, mesh warp, transitions, the show timer, the phone remote and WLED light cues.">
+<meta property="og:title" content="Features - SurfaceCast">
+<meta property="og:description" content="Scenes, layers, mesh warp, transitions, the show timer, the phone remote and WLED light cues.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="index.html">Overview</a><a href="who-its-for.html">Who it&#x27;s for</a><a href="features.html" aria-current="page">Features</a><a href="download.html">Download</a><a href="docs/index.html">Documentation</a><a href="license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Features</p>
+    <h1>What is in it</h1>
+    <p class="lede">Everything below is in the program today. Where a number appears it
+    is read from the source, not written down twice.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Scenes and layers</h2>
+    <div class="feature">
+      <div>
+        <p>A scene is a stack of up to 32 objects: video, image,
+        colour or gradient, and masks for blanking spill off things that should stay dark.
+        Two of those have mesh-warping variants for surfaces that are not flat.</p>
+        <p>Objects have two modes: <em>layout</em>, with a grid and drag handles for
+        placing them, and <em>content</em>, for what the object actually shows.
+        Each can be softened at the edges with a vignette so it settles into the
+        surface instead of ending on it.</p>
+      </div>
+      <figure><img src="assets/screens/console-layout.png" alt="Placing an object with drag handles" loading="lazy" width="1368"><figcaption>Layout mode: handles, grid and the placement fields.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Running the show</h2>
+    <div class="grid grid-2">
+      <div class="card"><h3>Transitions</h3><p>Each scene arrives with a cut or a
+      cross-fade, with its own fade time, editable right on the scene strip.</p></div>
+      <div class="card"><h3>Show timer</h3><p>Give each scene an <em>active for</em>
+      time and the show advances itself, wrapping from the last scene to the first.
+      A duration of zero means hold.</p></div>
+      <div class="card"><h3>Undo</h3><p>Fifty steps, per scene, covering everything that
+      changes a scene - including edits made from the phone.</p></div>
+      <div class="card"><h3>Media folder</h3><p>One folder for a show's images and video,
+      with an <em>Add from media</em> list. A phone can put files in it too, if you
+      allow it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The projector</h2>
+    <div class="feature">
+      <figure><img src="assets/screens/projector.png" alt="The projector output" loading="lazy" width="1368"><figcaption>The output: no title bar, no cursor, no taskbar.</figcaption></figure>
+      <div>
+        <p>A borderless window fills the second screen. Pick which screen under
+        <strong>Output</strong>, and flash the number on each one if you are not sure
+        which physical projector is which.</p>
+        <p>Positions are stored as a share of the canvas rather than in pixels, so a show
+        authored against a 1920&times;1080 projector still lines up on a 1280&times;800 one.</p>
+        <p>If nothing is live the output says so rather than going quietly black - that is
+        how you tell an unassigned output from a dead one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Lights that follow the picture</h2>
+    <div class="feature">
+      <div>
+        <p>Rectangles of the canvas are averaged to a color every frame and sent to a
+        <a href="https://kno.wled.ge/">WLED</a> controller over the network, so LED strip,
+        uplights or a backdrop wash change with the projection instead of being cued
+        separately.</p>
+        <p>Zones are dragged over a live picture of the output, each one filled with the
+        color it is sending, so what a lamp will do is visible before it is aimed. What
+        they follow is the projector itself: they go out with a blackout and cross-fade
+        with a dissolve.</p>
+        <p>Off by default. Every packet carries a two-second hold time, so a crash or a
+        dropped network hands the rig back to its own programming rather than freezing it
+        on the last frame that arrived.</p>
+      </div>
+      <figure><img src="assets/screens/lights-zones.png" alt="The light zone editor" loading="lazy" width="1368"><figcaption>Zones over the live output, each filled with the color it is sending.</figcaption></figure>
+    </div>
+    <div class="feature">
+      <figure><img src="assets/screens/lights-cue.png" alt="One scene&#x27;s light cue" loading="lazy" width="1368"><figcaption>A scene holding a color: the lamps sit still whatever the picture does.</figcaption></figure>
+      <div>
+        <p>A scene can also tell the lamps what to do: <em>follow the picture</em>,
+        <em>hold a color</em>, or <em>stay dark</em>, each with its own level. The cue
+        arrives over that scene's own transition, so a three second fade moves the lights
+        over three seconds too.</p>
+        <p>Cues travel in the scene file and zones stay with the machine - the same split
+        a lighting desk makes between the cue and the patch - so a show plays in a venue
+        whose rig is hung differently without a color being re-picked.</p>
+      </div>
+    </div>
+    <div class="feature">
+      <div>
+        <p>DMX fixtures work the same way: point a zone at a universe and a start
+        channel instead of a run of LEDs, over Art-Net or sACN. Two generic RGB par
+        profiles are built in - including the four-channel kind whose first channel is a
+        dimmer, which is the one that catches people out.</p>
+        <p>For the lamps that arrive with a mode dial and no paperwork, the fixture
+        builder finds out: sweep one channel with every other at zero, watch what moves,
+        write it down. Red, green and blue follow the picture; every other channel is
+        held where you park it.</p>
+      </div>
+      <figure><img src="assets/screens/lights-fixture.png" alt="The fixture builder" loading="lazy" width="1368"><figcaption>Describing a moving head channel by channel, without a manual.</figcaption></figure>
+    </div>
+    <div class="grid grid-2">
+      <div class="card"><h3>WLED and DMX</h3><p>Zones go out as pixels to a WLED
+      controller, or as fixtures over Art-Net, sACN or an Enttec-compatible USB adapter,
+      in one rig and on the same tick.
+      A fixture builder describes anything not already known, including a channel sweep
+      for lamps that arrive with no manual.</p></div>
+      <div class="card"><h3>Where the rig lives</h3><p>With the computer, not the show
+      file - the zones describe where the lamps physically are, as a share of the
+      canvas, so a rig survives a change of projector.</p></div>
+      <div class="card"><h3>Cues live in the scene</h3><p>A scene can tell the lamps to
+      follow, hold a color or stay dark, with its own intensity, and the cue arrives over
+      that scene's transition. Patch with the machine, cue with the show - so a show
+      plays anywhere without a color being re-picked.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Settings that fit</h2>
+    <div class="feature">
+      <div>
+        <p>Output, console, files, remote and lights, in five tabs. The remote listens on port
+        50505 unless you change it, and the port does not move on its own,
+        so a phone can bookmark the address.</p>
+        <p>Autosave keeps a recovery copy while anything is unsaved, at an interval
+        you choose.</p>
+      </div>
+      <figure><img src="assets/screens/settings-remote.png" alt="The remote control settings tab" loading="lazy" width="1368"><figcaption>The remote tab, with the warning it always shows.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Not in it yet</h2>
+    <p>Stated plainly, because finding out on the night is worse.</p>
+    <div class="grid grid-2">
+      <div class="card"><h3>One projector</h3><p>No multi-projector edge blending.</p></div>
+      <div class="card"><h3>Mesh warp is CPU</h3><p>Good for one 1080p video layer,
+      not for 4K. <a href="docs/mesh-video.html">The measurements are published.</a></p></div>
+      <div class="card"><h3>No blend modes</h3><p>Normal alpha compositing only - no
+      additive or screen blending yet.</p></div>
+      <div class="card"><h3>No external control</h3><p>No timeline, cue list, MIDI or
+      OSC. DMX is colour only: other channels are held where you park them.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="license.html">Licence</a></li>
+          <li><a href="docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

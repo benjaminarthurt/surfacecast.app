@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Licence - SurfaceCast</title>
+<meta name="description" content="SurfaceCast is free software under the GPL v3 or later. Third-party notices for the bundled Qt, FFmpeg and Python.">
+<meta property="og:title" content="Licence - SurfaceCast">
+<meta property="og:description" content="SurfaceCast is free software under the GPL v3 or later. Third-party notices for the bundled Qt, FFmpeg and Python.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="index.html">Overview</a><a href="who-its-for.html">Who it&#x27;s for</a><a href="features.html">Features</a><a href="download.html">Download</a><a href="docs/index.html">Documentation</a><a href="license.html" aria-current="page">Licence</a></nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">GPL-3.0-or-later</p>
+    <h1>Licence</h1>
+    <p class="lede">SurfaceCast is free software under the GNU General Public License,
+    version 3 or later.</p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="grid grid-3">
+      <div class="card"><h3>You may</h3><p>Run it for any purpose, study how it works,
+      change it, and share it - original or modified.</p></div>
+      <div class="card"><h3>You must</h3><p>Pass on the same freedoms. Anyone you give a
+      build to is entitled to its complete corresponding source, under the same licence.</p></div>
+      <div class="card"><h3>There is no warranty</h3><p>None at all. It is provided as is,
+      and the copyright holder is not liable for what it does.</p></div>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://www.gnu.org/licenses/gpl-3.0.html">Read the full licence</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap doc-body">
+    <h1 id="licence-and-third-party-notices">Licence and third-party notices</h1>
+<h2 id="surfacecast">SurfaceCast</h2>
+<p>SurfaceCast is free software: you can redistribute it and modify it under the
+terms of the <strong>GNU General Public License, version 3 or (at your option) any
+later version</strong>, as published by the Free Software Foundation. The full text is
+in <code>LICENSE</code>, installed alongside this file.</p>
+<pre><code>Copyright (C) 2026 Dispatch Dataworks LLC
+(Benjamin Townsend, principal member) and SurfaceCast contributors
+</code></pre>
+<p>It is distributed in the hope that it will be useful, but <strong>WITHOUT ANY
+WARRANTY</strong>; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+A PARTICULAR PURPOSE. See the GNU General Public License for more details.</p>
+<p>SPDX-License-Identifier: <code>GPL-3.0-or-later</code></p>
+<h3 id="getting-the-source">Getting the source</h3>
+<p>The GPL entitles anyone who receives SurfaceCast — including as a packaged
+Windows build — to the complete corresponding source code for the version they
+received.</p>
+<p>The source is not published on a public site. It is supplied on request, at no
+charge: write to <code>help@surfacecast.app</code>, saying which version you have, and you
+will be sent the complete corresponding source for exactly that version.</p>
+<p>The installed build reports its version under <strong>Help &gt; About</strong>, and the Windows
+executable carries it in its file properties.</p>
+<h2 id="qt-via-pyside6-lgpl-v3">Qt, via PySide6 (LGPL v3)</h2>
+<p>A packaged SurfaceCast bundles the Qt libraries and the PySide6 bindings. Both
+are used here under the <strong>GNU Lesser General Public License, version 3</strong>, which
+is compatible with the GPL that covers SurfaceCast itself.</p>
+<ul>
+<li>Qt is copyright The Qt Company Ltd and other contributors.</li>
+<li>Licence text: <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a></li>
+<li>Qt's own licensing page: <a href="https://doc.qt.io/qt-6/lgpl.html">https://doc.qt.io/qt-6/lgpl.html</a></li>
+<li>Source for the exact version used is published by the Qt Project at
+  <a href="https://download.qt.io/official_releases/qt/">https://download.qt.io/official_releases/qt/</a> and by PySide6 on PyPI at
+  <a href="https://pypi.org/project/PySide6/">https://pypi.org/project/PySide6/</a>. The version in this build is shown in
+  the diagnostics report (<strong>Help &gt; Save diagnostics report</strong>).</li>
+</ul>
+<p>SurfaceCast does not modify Qt. It is bundled unmodified and loaded as a
+shared library.</p>
+<p><strong>Replacing the Qt libraries.</strong> The LGPL gives you the right to run SurfaceCast
+against your own build of Qt. SurfaceCast is deliberately packaged as a folder
+of loose files rather than a single self-extracting executable, so this needs no
+cooperation from us: the Qt DLLs sit next to <code>SurfaceCast.exe</code> in the install
+directory and can be replaced in place with a compatible build.</p>
+<h2 id="ffmpeg">FFmpeg</h2>
+<p>Video decoding uses the FFmpeg build that Qt bundles with its multimedia
+backend. It is redistributed as Qt ships it, under the LGPL v2.1 or later.</p>
+<ul>
+<li>Project and source: <a href="https://ffmpeg.org/download.html">https://ffmpeg.org/download.html</a></li>
+<li>Licence text: <a href="https://www.ffmpeg.org/legal.html">https://www.ffmpeg.org/legal.html</a></li>
+</ul>
+<h2 id="python">Python</h2>
+<p>A packaged build embeds the CPython runtime, used under the Python Software
+Foundation License.</p>
+<ul>
+<li>Licence text: <a href="https://docs.python.org/3/license.html">https://docs.python.org/3/license.html</a></li>
+</ul>
+<h2 id="inno-setup">Inno Setup</h2>
+<p>The Windows installer is produced with Inno Setup, which is not itself
+redistributed as part of SurfaceCast.</p>
+<ul>
+<li><a href="https://jrsoftware.org/isinfo.php">https://jrsoftware.org/isinfo.php</a></li>
+</ul>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="license.html">Licence</a></li>
+          <li><a href="docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

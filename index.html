@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SurfaceCast - projection mapping for live shows</title>
+<meta name="description" content="Free, open-source projection mapping for Windows: warp video and images onto real surfaces and run the show from the desk or from a phone. For small venues, churches, schools and escape rooms.">
+<meta property="og:title" content="SurfaceCast - projection mapping for live shows">
+<meta property="og:description" content="Free, open-source projection mapping for Windows: warp video and images onto real surfaces and run the show from the desk or from a phone. For small venues, churches, schools and escape rooms.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="index.html" aria-current="page">Overview</a><a href="who-its-for.html">Who it&#x27;s for</a><a href="features.html">Features</a><a href="download.html">Download</a><a href="docs/index.html">Documentation</a><a href="license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Projection mapping for live shows</p>
+    <h1>Put the picture exactly where the surface is.</h1>
+    <p class="lede">SurfaceCast is a projection mapping console for Windows. Stack video,
+    images and light on as many scenes as a show needs, warp each layer onto the thing
+    it is being projected at, and run the show from the desk or from your phone.</p>
+    <p class="lede-sub">Free and open source, for small venues, churches, schools,
+    escape rooms and anyone with one projector and a surface that is not a screen.
+    No account, no licence key, nothing sent anywhere.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="download.html">Download</a>
+      <a class="btn" href="who-its-for.html">Is this for me?</a>
+      <a class="btn" href="docs/user-guide.html">Read the guide</a>
+    </div>
+    <div class="hero-shot"><figure><img src="assets/screens/console.png" alt="The SurfaceCast control panel running a show" loading="lazy" width="1368"><figcaption>The control panel: layers, preview, properties and the scene strip.</figcaption></figure></div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <h2>Built for the night of the show</h2>
+    <p>Every design decision here assumes an operator standing at a desk at 19:55
+    with an audience coming in.</p>
+    <div class="grid grid-3">
+      <div class="card"><h3>Preview and program</h3>
+      <p>Edit one scene while another is live. The preview says <strong>EDIT - NOT LIVE</strong>
+      when they differ, so there is never a doubt about what the audience can see.</p></div>
+      <div class="card"><h3>Queue, then take</h3>
+      <p>A number key queues a scene; the same key again takes it. Cut or cross-fade,
+      set per scene. Nothing goes to the projector by accident.</p></div>
+      <div class="card"><h3>Bounded memory</h3>
+      <p>Scenes that are not on screen are checked but not decoded. A show can
+      reference far more media than the machine could ever hold at once.</p></div>
+      <div class="card"><h3>Autosave and recovery</h3>
+      <p>While anything is unsaved the whole show is copied aside every minute.
+      A clean exit deletes it, so finding one at startup <em>is</em> the crash signal.</p></div>
+      <div class="card"><h3>It leaves evidence</h3>
+      <p>A rotating log records the versions, every screen, the show as you run it and
+      any internal error. One menu item writes a report to attach to a bug.</p></div>
+      <div class="card"><h3>Fits a small screen</h3>
+      <p>The console works at 1280&times;800, so a Surface Pro on a cramped
+      front-of-house table is enough to run from.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Warp it onto the surface</h2>
+    <p>Corner pin handles a flat panel hit at an angle. When the surface bends -
+    a curved cyc, a column, an inside corner - a mesh warp cuts the picture into a
+    grid and lets you pull each point onto the thing itself.</p>
+    <div class="feature">
+      <div>
+        <h3>Aim before you align</h3>
+        <p>Any layer can show a numbered alignment grid on the output instead of its
+        content, warped exactly as the content will be. Straight lines and square cells
+        on the real surface mean the warp is right - before you have loaded any media.</p>
+        <p>It is a setup aid, and it is never saved with the scene.</p>
+      </div>
+      <figure><img src="assets/screens/projector-aiming.png" alt="A projector output with an alignment grid on one surface" loading="lazy" width="1368"><figcaption>The output with one surface aimed.</figcaption></figure>
+    </div>
+    <div class="feature">
+      <figure><img src="assets/screens/console-keystone.png" alt="The control panel in keystone mode" loading="lazy" width="1368"><figcaption>Keystone mode: drag a corner, and the X/Y/W/H fields do not move.</figcaption></figure>
+      <div>
+        <h3>Keystone that stays out of the way</h3>
+        <p>Corner offsets are stored separately from the rectangle, so the position and
+        size fields keep working after you have warped something, and the warp can be
+        cleared without moving the object.</p>
+        <p>A mesh with one cell is exactly a corner pin, so you can start flat and
+        subdivide when the wall turns out not to be.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Run it from your pocket</h2>
+    <p>SurfaceCast can serve a small control page on the local network, so the show can
+    be run from a phone while you stand where the audience is.</p>
+    <div class="phones">
+      <figure><img src="assets/screens/phone-show.png" alt="The remote control page on a phone" loading="lazy">
+      <figcaption>Show control: blackout, scenes, timer.</figcaption></figure>
+      <figure><img src="assets/screens/phone-queued.png" alt="A scene queued on the phone remote" loading="lazy">
+      <figcaption>Queued, waiting for the take.</figcaption></figure>
+      <figure><img src="assets/screens/phone-edit.png" alt="Editing a scene from the phone" loading="lazy">
+      <figcaption>Edit mode, with undo and the cue settings.</figcaption></figure>
+    </div>
+    <div class="note warn">
+      <p><strong>It is off by default, and it has no password.</strong> You choose which
+      network adapter it listens on, and you are warned before it starts. That is fine on
+      a private show network; it is not for public Wi-Fi. Editing and media upload are
+      separate switches, both of which can stay off.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Is it for you?</h2>
+    <div class="feature">
+      <div>
+        <p>It suits a band backdrop built from flats, a church stage that changes every
+        season, school scenery between acts, an escape room that has to come up on its
+        own, or a shop window with a laptop behind it.</p>
+        <p>It is <em>not</em> for blending two projectors into one image, for a show
+        locked to timecode, or for being driven by a lighting desk. Those are said
+        plainly rather than left to be discovered.</p>
+      </div>
+      <div class="card"><h3>What you need</h3>
+      <p>A Windows 10 or 11 laptop, a projector, and something awkward to point it at.
+      No special graphics card, no internet, and nothing to sign up for.</p>
+      <p><a href="who-its-for.html">Who it's for, in full &rarr;</a></p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Free software</h2>
+    <p>SurfaceCast is published under the GNU General Public License v3 or later.
+    Anyone who receives a build gets its source with it, and the same freedom to change
+    it and pass it on.</p>
+    <div class="btn-row">
+      <a class="btn" href="license.html">Licence and notices</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="license.html">Licence</a></li>
+          <li><a href="docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

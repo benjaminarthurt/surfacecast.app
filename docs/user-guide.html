@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>User guide - SurfaceCast</title>
+<meta name="description" content="Running a show, placing and warping objects, the phone remote.">
+<meta property="og:title" content="User guide - SurfaceCast">
+<meta property="og:description" content="Running a show, placing and warping objects, the phone remote.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="doc-layout">
+    <nav class="doc-nav"><h4>On this page</h4><ul class="doc-toc"><li><a href="#first-run-from-installed-to-a-picture-on-the-wall">First run: from installed to a picture on the wall</a></li><li><a href="#the-two-windows">The two windows</a></li><li><a href="#small-screens">Small screens</a></li><li><a href="#the-preview">The preview</a></li><li><a href="#objects">Objects</a></li><li><a href="#running-a-show">Running a show</a></li><li><a href="#undo">Undo</a></li><li><a href="#the-media-folder">The media folder</a></li><li><a href="#files">Files</a></li><li><a href="#settings">Settings</a></li><li><a href="#remote-control-from-a-phone">Remote control from a phone</a></li><li><a href="#lights-that-follow-the-picture">Lights that follow the picture</a></li><li><a href="#keyboard-reference">Keyboard reference</a></li></ul><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html" aria-current="page">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html">Building</a></li><li><a href="scene-format.html">Scene file format</a></li><li><a href="settings-format.html">Settings format</a></li><li><a href="mesh-video.html">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
+    <div class="doc-body">
+      <h1 id="surfacecast-user-guide">SurfaceCast user guide</h1>
+<p><img alt="The SurfaceCast control panel" src="../assets/images/console.png"></p>
+<h2 id="first-run-from-installed-to-a-picture-on-the-wall">First run: from installed to a picture on the wall</h2>
+<p>If you have just installed SurfaceCast and a projector is plugged in, this is
+the shortest path to something on the surface. Ten minutes, and nothing here
+has to be undone later.</p>
+<p><strong>1. Tell it which screen the projector is.</strong>
+Open <strong>Output &gt; Projector screen</strong> and pick one. If you cannot tell which is
+which, use <strong>Output &gt; Identify screens</strong> — every display flashes its own number
+for a couple of seconds.</p>
+<p><strong>2. Open the output.</strong>
+<code>F5</code>, or <strong>Output &gt; Projector window</strong>. The projector fills one whole screen,
+borderless and with no cursor. It says <em>No scene is live</em> rather than going
+black, so you can tell it apart from a dead cable.</p>
+<p><strong>3. Put something in scene 1.</strong>
+The scene strip is along the bottom. Slot 1 is already an empty scene, so add
+an object to it: <strong>Video</strong>, <strong>Image</strong> or <strong>Color</strong> in the Layers panel on the
+left. An image or a plain color is the easiest thing to aim with.</p>
+<p><strong>4. Put it where the surface is.</strong>
+Press <code>L</code> for layout mode and drag the object's handles until it covers the
+thing you are projecting onto. If the surface is at an angle, press <code>W</code> and
+drag the four corners instead — that is keystone correction, and it is how a
+rectangle becomes the shape of a wall seen from off to one side.</p>
+<p><strong>5. Check it against the real thing.</strong>
+Press <code>A</code> with the object selected. Its content is replaced by an alignment
+grid on the output, which is far easier to line up against an edge than a
+photograph is. Press <code>A</code> again when it fits.</p>
+<p><strong>6. Take it live.</strong>
+Click slot 1, or press <code>1</code> then <code>Space</code>. The projector shows it.</p>
+<p><strong>7. Save.</strong>
+<code>Ctrl+S</code> saves that one scene. <strong>File &gt; Save show</strong> saves every slot at once,
+which is what you want once there is more than one.</p>
+<p>From here: fill the other slots, give them <a href="#transitions">transitions</a>, and if
+the surface is not flat read <a href="#mesh-warp-surfaces-that-are-not-flat">mesh warp</a>.
+Nothing above is a setting you have to revisit.</p>
+<h2 id="the-two-windows">The two windows</h2>
+<p>The <strong>control panel</strong> is the window you work in. The <strong>projector window</strong> is the
+output: borderless, no cursor, filling one whole screen.</p>
+<p><img alt="The projector output: no title bar, no cursor, no taskbar" src="../assets/images/projector.png"></p>
+<p>Open the projector with <code>F5</code> or <strong>Output &gt; Projector window</strong>. Choose which
+screen it uses in <strong>Output &gt; Projector screen</strong>, or in <strong>File &gt; Settings</strong>. If
+you are not sure which physical projector is which, use <strong>Output &gt; Identify
+screens</strong> - the output flashes its screen number for a couple of seconds.</p>
+<p>By default the canvas adopts the projector's own resolution: the projector
+window measures itself and reports back, and the canvas, the preview and the
+pixel readouts all follow. Turn that off in Settings if you need to author
+against a fixed resolution.</p>
+<h2 id="small-screens">Small screens</h2>
+<p>The console fits a 1280x800 screen, which covers a Surface Pro and most small
+laptops. On a narrow window the cue settings under the scene slots are dropped
+— they need about 730 pixels of strip for all five — and the status bar says
+so when it happens. They come back when there is room, and they are always
+available from the scene menu (right click, or press and hold on a touch
+screen) whatever
+the width.</p>
+<p>Widening a panel takes width from the strip, so dragging the Properties panel
+out can be what pushes the cue settings off. Drag it back, or use
+<strong>View &gt; Cue settings on the scene strip</strong> to turn them off deliberately.</p>
+<h2 id="the-preview">The preview</h2>
+<p>The preview shows the scene you are <strong>editing</strong>. The projector shows the scene
+that is <strong>live</strong>. Usually they are the same scene, and the preview is then a
+true picture of the output. When you edit an off-air scene, the preview is
+labeled <code>EDIT - NOT LIVE</code> so there is no doubt about what the audience can see.</p>
+<p>Editing furniture - the grid, the selection outline, the handles - is drawn by
+the preview only. None of it ever reaches the projector.</p>
+<h2 id="objects">Objects</h2>
+<p>Add objects from the <strong>Object</strong> menu, or drag media files onto the window:</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Video</td>
+<td>A looping video surface with its own playback and audio properties</td>
+</tr>
+<tr>
+<td>Image</td>
+<td>A still image</td>
+</tr>
+<tr>
+<td>Color / gradient</td>
+<td>A solid fill, or a linear, radial or conical gradient</td>
+</tr>
+<tr>
+<td>Mask</td>
+<td>An opaque shape that blanks out light over the layers below it</td>
+</tr>
+</tbody>
+</table>
+<p>The layer list is the stack. <strong>The top row is drawn on top of everything below
+it.</strong> Drag rows to restack, or use <code>Ctrl+Up</code> / <code>Ctrl+Down</code>. Right click a row
+for hide, lock, rename, duplicate and delete.</p>
+<p>The Layers panel carries the object operations as buttons, so none of it
+requires a trip to the menu bar: a row to add each kind of object, and a row to
+raise, lower, duplicate, delete and aim the selected one. They gray out when
+they do not apply - everything but the add buttons needs a selection, and the
+add buttons stop once the scene is full. The count underneath shows how close
+to the limit you are.</p>
+<h3 id="panels">Panels</h3>
+<p>The Layers and Properties panels can be dragged out into their own windows,
+docked on either side, or closed.</p>
+<p><strong>If you close one, get it back from View &gt; Panels</strong> - it lists both panels
+with a tick beside each. <strong>View &gt; Panels &gt; Reset panel layout</strong> (<code>Shift</code>+<code>F5</code>)
+puts both back where they started, docked and visible, which is the quickest
+way out of a layout you have tangled.</p>
+<p>The window size and panel layout are remembered between runs.</p>
+<p>A scene holds at most 32 objects.</p>
+<h3 id="placing-an-object-layout-mode">Placing an object: layout mode</h3>
+<p><img alt="Layout mode: drag handles, the alignment grid and the placement fields" src="../assets/images/console-layout.png"></p>
+<p>New objects start in <strong>layout mode</strong> (<code>L</code>), which shows the alignment grid and
+the drag handles:</p>
+<ul>
+<li>Drag <strong>inside</strong> the object to move it.</li>
+<li>Drag a <strong>corner or edge handle</strong> to resize it.</li>
+<li>Drag the <strong>round handle above the object</strong> to rotate it.</li>
+<li>Hold <strong>Shift</strong> while dragging a corner to keep the aspect ratio.</li>
+<li>Hold <strong>Ctrl</strong> for fine control (one fifth speed).</li>
+<li><strong>Arrow keys</strong> nudge by one output pixel; <strong>Shift+arrows</strong> by ten.</li>
+</ul>
+<p>Turn on <strong>snap to grid</strong> (<code>Shift+G</code>) to round positions to the grid, and set the
+number of divisions in Settings.</p>
+<h3 id="keystone-correction">Keystone correction</h3>
+<p><img alt="Keystone mode: the four corners dragged independently" src="../assets/images/console-keystone.png"></p>
+<p>Press <code>W</code>, or hold <strong>Alt</strong> while dragging, to corner-pin instead of resize. Each
+corner then moves on its own, which is how you square up a surface the projector
+hits at an angle. Dragging an edge in this mode moves both of its corners.</p>
+<p>A drag that would fold the shape over itself is refused rather than applied -
+there is no valid perspective transform for a crossed quad.</p>
+<p>The corner offsets are stored separately from the rectangle, so the X/Y/W/H
+fields keep working normally after you have warped something. <strong>Reset keystone</strong>
+in the Transform panel clears the warp and leaves the rectangle alone.</p>
+<h3 id="mesh-warp-surfaces-that-are-not-flat">Mesh warp: surfaces that are not flat</h3>
+<p>Keystone maps a rectangle onto a flat quadrilateral and nothing else. On a
+curved cyc, a column, or a projector throwing across an inside corner, you can
+get the edges to line up and the middle will still be visibly wrong.</p>
+<p>An <strong>Image (mesh warp)</strong> layer cuts the picture into a grid of cells and lets
+you pull each point onto the surface.</p>
+<ul>
+<li><strong>Ctrl+5</strong> adds one (<strong>Ctrl+6</strong> for video), or <strong>Object &gt; Convert to mesh
+  warp</strong> converts an image or video you have already placed.</li>
+<li>Press <strong>W</strong> for warp mode and the grid appears over the object.</li>
+<li><strong>Drag</strong> any point. <strong>Tab</strong> steps through them, <strong>Alt+arrows</strong> nudge whichever
+  grid point is lit. <strong>Ctrl</strong> makes that a ten-pixel step rather than one,
+  as it does for the arrow keys elsewhere; for finer than a pixel, drag the
+  point with <strong>Ctrl</strong> held.</li>
+<li>The cell count is in the properties panel, up to 16 x 16.</li>
+<li><strong>Flatten the grid</strong> puts every point back on an even grid without touching
+  the object's position, size or rotation.</li>
+</ul>
+<p>Two things worth relying on:</p>
+<ul>
+<li><strong>Converting keeps the alignment.</strong> A one-cell mesh <em>is</em> a corner pin, so
+  going either way leaves the picture exactly where it was. Converting back to
+  a plain image keeps the four outer corners; if you have warped anything
+  inside them, you are told before it is flattened, and it can be undone.</li>
+<li><strong>Subdividing never moves the picture.</strong> The new points land on the surface
+  that is already there, so you can line a surface up roughly with a coarse
+  grid, then subdivide and refine without losing the work.</li>
+</ul>
+<p>Turn the aiming grid on (<strong>A</strong>) and it is warped by the mesh too. That is how
+you actually set one: straight lines and square cells on the surface mean the
+mesh matches it.</p>
+<h4 id="mesh-video">Mesh video</h4>
+<p><strong>Ctrl+6</strong> adds a video with a mesh, and <strong>Convert to mesh warp</strong> works on a
+video layer too. Everything about playback is identical to an ordinary video
+layer, because it <em>is</em> one — loop, trim, volume, rate, audio device, all of it
+carried over by the conversion.</p>
+<p>It costs more than a plain video, and it is worth knowing how much. Each frame
+is resampled to fit the grid rather than handed to Qt whole. Measured at 1080p
+on a modest machine: about 12 ms a frame at one cell and 21 ms at 8 x 8, where
+a plain keystoned video costs about 5 ms and the budget is 33 ms at 30 fps.
+So:</p>
+<ul>
+<li><strong>One 1080p mesh video is comfortable.</strong> Several at once will not be.</li>
+<li><strong>Turn off Smooth sampling</strong> in the mesh panel if a machine is struggling. It
+  roughly halves the cost of drawing a warped frame. The trade is aliasing on
+  detailed content.</li>
+<li><strong>Fewer cells is cheaper</strong>, but not by much — the expense is warping at all,
+  not how finely.</li>
+<li><strong>4K mesh video does not work.</strong> 60-100 ms a frame, or 10-17 fps.</li>
+<li>A <strong>vignette or the aiming grid</strong> adds about 6 ms a frame, because the
+  picture has to be composed before it can be warped. Fine for setting up; turn
+  the grid off before the show.</li>
+</ul>
+<p><code>docs/MESH-VIDEO-SPIKE.md</code> has the full measurements and the tool that made
+them — run it on your own machine to get numbers that apply to you.</p>
+<h4 id="what-mesh-layers-do-differently">What mesh layers do differently</h4>
+<ul>
+<li>The grid owns the whole warp, so the object's own keystone is left flat. The
+  four outer grid points are the keystone.</li>
+<li>The soft edge (vignette) is warped along with the picture rather than applied
+  over the top, so it follows the surface.</li>
+<li>Grid offsets are a fraction of the <strong>object</strong>, not the canvas, so a warp keeps
+  its shape when you move, resize or rotate the object.</li>
+</ul>
+<h3 id="aiming-a-surface">Aiming a surface</h3>
+<p><img alt="An alignment grid projected onto one surface, over the real scene" src="../assets/images/projector-aiming.png"></p>
+<p><strong>Every object can be aimed</strong> - video, image, color/gradient and mask alike.
+Aiming and the vignette are properties of any object you put on the surface,
+not of particular kinds, so the controls sit in the shared Object panel and
+appear whatever is selected.</p>
+<p>Tick <strong>Show an alignment grid instead of content</strong> in the Properties panel, or
+press <code>A</code>, and that object stops showing its content and puts a uniform grid on
+the output instead. The grid is drawn in the object's own space, so it is
+warped by the keystone exactly as the content would be: straight lines and
+square cells on the physical surface mean the object is aligned.</p>
+<p>The grid carries the object's name, so several can be aimed at once without
+losing track of which is which. The center line of each axis is highlighted and
+the diagonals are dashed, which makes it easy to find the middle of a surface
+from the back of a room.</p>
+<p>While an object is being aimed the arrow keys become a complete placement
+control, so you can work with your eyes on the projection rather than on the
+screen:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Arrows</td>
+<td>Move by one output pixel</td>
+</tr>
+<tr>
+<td><code>Shift</code>+arrows</td>
+<td>Resize, growing or shrinking about the center</td>
+</tr>
+<tr>
+<td><code>Alt</code>+arrows</td>
+<td>Keystone the active corner</td>
+</tr>
+<tr>
+<td><code>Tab</code> / <code>Shift</code>+<code>Tab</code></td>
+<td>Choose which corner the keystone keys move</td>
+</tr>
+<tr>
+<td><code>Page Up</code> / <code>Page Down</code></td>
+<td>Rotate</td>
+</tr>
+<tr>
+<td>Add <code>Ctrl</code></td>
+<td>Ten-pixel steps, or ten degrees</td>
+</tr>
+<tr>
+<td><code>Shift</code>+<code>Page Up</code>/<code>Down</code></td>
+<td>Rotate by a tenth of a degree</td>
+</tr>
+</tbody>
+</table>
+<h4 id="choosing-the-corner-to-keystone">Choosing the corner to keystone</h4>
+<p><code>Alt</code>+arrows move one corner at a time. Which one is shown <strong>on the projection
+itself</strong>, as a red bracket and dot inside the aiming grid, so you never have to
+look back at the laptop to find out which point you are about to move.</p>
+<p>Three ways to change it:</p>
+<ul>
+<li><code>Tab</code> steps round the corners, <code>Shift</code>+<code>Tab</code> goes back.</li>
+<li>Click a corner handle in the preview.</li>
+<li>The preview also rings the active corner, so both views agree.</li>
+</ul>
+<p><code>Tab</code> still moves between fields as usual when you are typing in the properties
+panel; it only cycles corners when the focus is somewhere else.</p>
+<p>Aiming is a setup aid and is <strong>not saved</strong> with the scene, so a show can never
+reopen with grids on stage instead of content. <code>Shift</code>+<code>A</code> clears every aiming
+grid in every scene at once - worth using before you go live, because an object
+left aiming in a scene you are not looking at would put a grid on the projector
+the moment you cut to it.</p>
+<h3 id="vignette-softening-an-objects-edges">Vignette: softening an object's edges</h3>
+<p>Every object - again, of any type - has a <strong>Vignette</strong> slider, which fades its
+edges to transparent.
+A hard projected edge on a physical surface is one of the most obvious giveaways
+in a projection; a small vignette hides it, and it is also how you blend two
+objects into one another where they overlap.</p>
+<p>Two shapes are available:</p>
+<ul>
+<li><strong>Edge feather</strong> keeps the center of the object at full brightness and fades
+  only the borders. This is the usual projection soft edge.</li>
+<li><strong>Radial</strong> fades outwards from the center in an oval, the photographic look.</li>
+</ul>
+<p>The vignette fades to <em>transparent</em>, not to black, so whatever is on the layer
+underneath shows through the falloff.</p>
+<p>It is saved with the scene, and it costs nothing while it is switched off - the
+compositing it needs is only set up when the slider is above zero.</p>
+<h3 id="configuring-an-object-content-mode">Configuring an object: content mode</h3>
+<p>Once an object is placed, press <code>L</code> again (or double click the preview) to leave
+layout mode. The handles get out of the way and you work in the properties
+panel.</p>
+<p><strong>Video</strong> - file, scaling, loop, whether it plays when the scene goes live,
+whether it restarts from the in point on each take, speed, in and out trim
+points, transport buttons, volume, mute and output device. Audio only leaves a
+layer while its scene is live, so a preloaded scene is silent.</p>
+<p><strong>Image</strong> - file, scaling (fit inside, fill and crop, stretch), smoothing and
+flip.</p>
+<p><strong>Color / gradient</strong> - solid, linear, radial or conical; angle, center and
+radius; and a stop editor of up to eight color stops with alpha. <strong>Reverse</strong>
+flips the order, so a fade one way becomes a fade the other.</p>
+<p>Blackout covers the entire output, edge to edge, not only the canvas area, so
+nothing shows through at the perimeter while it is on. The preview keeps
+showing the scene faintly behind a <code>BLACKOUT</code> banner, so you can still see what
+is live while the audience cannot.</p>
+<p>Nothing outside the canvas is ever projected: an object dragged past the edge
+is masked off rather than throwing light beside the surface.</p>
+<p><strong>Mask</strong> - rectangle, ellipse or polygon; corner radius; feather for a soft
+edge; and <strong>invert</strong>, which covers everything <em>except</em> the shape. An inverted
+mask covers the whole output, not just its own rectangle, so its rectangle
+positions the hole it cuts. For a polygon, <strong>Build regular polygon</strong> replaces
+the points with an even-sided shape of up to sixteen sides, which is a faster
+start than placing them one at a time.</p>
+<h2 id="running-a-show">Running a show</h2>
+<p>The slots along the bottom are the switcher - five to begin with, and as
+many as twenty if a show needs them.</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Left click</strong> a slot</td>
+<td>Take that scene live, straight away</td>
+</tr>
+<tr>
+<td><strong>Ctrl + left click</strong> a slot</td>
+<td>Load its media and start editing it, without changing the output</td>
+</tr>
+<tr>
+<td><strong>Right click</strong> a slot, or press and hold on a touch screen</td>
+<td>The scene menu: everything about that scene</td>
+</tr>
+<tr>
+<td><strong>Middle click</strong> a slot</td>
+<td>The same menu, for a mouse that has the button</td>
+</tr>
+<tr>
+<td><strong><code>1</code>-<code>9</code></strong></td>
+<td>Queue that scene</td>
+</tr>
+<tr>
+<td>The same number again, or <strong><code>Space</code></strong></td>
+<td>Take the queued scene</td>
+</tr>
+<tr>
+<td><strong><code>Alt</code>+<code>1</code>-<code>9</code></strong></td>
+<td>Edit a scene without changing the output</td>
+</tr>
+<tr>
+<td><strong><code>B</code></strong></td>
+<td>Blackout - blank the output without changing which scene is live</td>
+</tr>
+</tbody>
+</table>
+<p>A click takes immediately; the number keys queue first and need a second press.
+That is deliberate — the mouse is for when you are looking at the strip, and the
+keys are for when you are looking at the stage. If a stray click worries you,
+<strong>Confirm before taking a scene live</strong> in Settings puts a question in the way.</p>
+<p>Each slot shows what it is doing: <code>Empty</code>, <code>Ready</code>, <code>Loaded</code>, <code>QUEUED</code> or <code>LIVE</code>,
+plus the object count and the media status. Its <strong>active for</strong> time, if it has
+one, sits to the right of the scene name, and a fade is named at the bottom
+right.</p>
+<h3 id="cue-settings-on-the-strip">Cue settings on the strip</h3>
+<p>Under each slot are the two things you change while building a show:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Seconds</strong></td>
+<td>How long the show timer holds this scene. <code>hold</code> (zero) stops the run here until you take the next scene yourself.</td>
+</tr>
+<tr>
+<td><strong>Cut / Fade</strong></td>
+<td>How this scene arrives when it is taken.</td>
+</tr>
+<tr>
+<td><strong>Fade time</strong></td>
+<td>How long the fade takes. Grayed out for a cut.</td>
+</tr>
+</tbody>
+</table>
+<p>They are ordinary fields, so a click lands on them rather than on the slot
+behind - editing a cue is never one mis-click away from taking it live. Press
+<strong>Enter</strong> when you have typed a value and the keyboard goes back to the show,
+so <code>1</code>-<code>9</code> and <code>Space</code> work again.</p>
+<p>Once a show is built you can put the strip back to just the slots with
+<strong>View &gt; Cue settings on the scene strip</strong>. Everything stays reachable from the
+scene menu (<strong>right click</strong> a slot), so nothing is lost by hiding them.</p>
+<h3 id="the-scene-menu">The scene menu</h3>
+<p><strong>Right click</strong> a scene on the strip — or <strong>press and hold</strong> it on a touch
+screen — for everything about that scene:</p>
+<ul>
+<li><strong>Rename…</strong>, and its <strong>Duration</strong>, <strong>Transition</strong> and <strong>Fade time</strong></li>
+<li><strong>Background…</strong> — the color drawn behind the objects</li>
+<li><strong>Notes…</strong> — saved with the scene, never shown on the output</li>
+<li><strong>Copy to scene</strong>, <strong>Move left</strong> / <strong>Move right</strong></li>
+<li>Take, queue, load media, open, save, unload, clear</li>
+</ul>
+<p>The menu names the scene at the top, which matters once there are more scenes
+than fit across the window.</p>
+<blockquote>
+<p><strong>This changed.</strong> A plain right click used to load a scene's media without
+changing the output. That is now <strong>Ctrl + left click</strong>. Right click belongs
+to the menu — on a touch screen a long press is the only way to reach one,
+and there is no middle button at all.</p>
+</blockquote>
+<h3 id="scene-background-and-notes">Scene background and notes</h3>
+<p>Two settings that are saved with every scene and had no way in until now:</p>
+<ul>
+<li><strong>Background</strong> is the color drawn behind everything in the scene. Black
+  unless you change it; useful for a wash, or to see the canvas edges while
+  aligning.</li>
+<li><strong>Notes</strong> are for you. They are saved with the scene and never reach the
+  output — somewhere to put "wait for the door, then take scene 2".</li>
+</ul>
+<h3 id="more-than-five-scenes">More than five scenes</h3>
+<p>The strip starts with five and grows to twenty.</p>
+<ul>
+<li><strong>Scene &gt; Add a scene slot</strong> (<code>Ctrl+Shift+N</code>) adds one on the end.</li>
+<li><strong>Remove the last slot</strong> takes one away. It refuses while there is still a
+  scene in it — clear the slot first.</li>
+<li>Once the slots stop fitting across the window the strip <strong>scrolls</strong>, with an
+  arrow at each end. The arrows only appear when there is something off the
+  edge to reach.</li>
+<li>A show saved with more than five scenes opens with as many slots as it needs.</li>
+</ul>
+<p>The <strong>number keys reach the first nine</strong>. Past that, use the strip, the slot
+menu, or the phone.</p>
+<h3 id="moving-a-scene">Moving a scene</h3>
+<p><code>Ctrl+Shift+Left</code> and <code>Ctrl+Shift+Right</code> move the scene you are editing along
+the strip, swapping it with its neighbour. <strong>Move left</strong> and <strong>Move right</strong> on
+the slot menu do the same for any slot.</p>
+<p>Whatever is live stays live as it moves, and so does whatever is queued or
+being edited — reordering during a show does not change the projector.</p>
+<h3 id="copying-a-scene">Copying a scene</h3>
+<p><strong>Copy to scene</strong> on the slot menu copies a scene's contents into another
+slot: the objects, the cue settings and the canvas, but <strong>not</strong> the file it
+came from.</p>
+<p>That last part is the point. Duplicating a scene by saving it and opening it
+somewhere else leaves the copy pointing at the original's file, so the first
+<code>Ctrl+S</code> writes over the original. A copy belongs to no file until you save it.</p>
+<p>It asks what to call the copy, suggesting "<name> copy". Use it to reuse the
+frames you built for one scene and swap the media out.</p>
+<h3 id="naming-scenes">Naming scenes</h3>
+<p><code>F2</code> renames the scene you are editing; <strong>Rename…</strong> on the slot menu renames
+any of them.</p>
+<p>Saving a scene under a new file name also renames the scene to match — but
+only if you never named it yourself. A scene still called "Scene 3", or called
+after the file it was last saved as, takes the new file's name. One you typed
+is left alone.</p>
+<h3 id="transitions">Transitions</h3>
+<p>Every scene owns the transition it arrives with, the way a cue sheet reads:
+<em>"scene 2, fade two seconds"</em>.</p>
+<ul>
+<li><strong>Cut</strong> is the default: instant, and what you want for most of a show.</li>
+<li><strong>Fade</strong> cross-dissolves from whatever is on air. Both scenes are on the
+  projector at once, and video on the outgoing scene <strong>keeps playing</strong> as it
+  goes - it is a real dissolve, not a still frame fading out.</li>
+</ul>
+<p>The fade time is per scene, from 0.1 to 30 seconds. Changing to a cut keeps the
+fade time, so switching back does not lose it.</p>
+<p>Some things worth knowing:</p>
+<ul>
+<li>Taking another scene mid-fade is allowed and lands on the new one; the
+  half-finished dissolve is dropped rather than queued up behind it.</li>
+<li>Blackout covers a fade like anything else, and the fade still completes
+  underneath.</li>
+<li>The scene coming off air keeps running until the dissolve finishes, so it
+  cannot be unloaded or evicted from memory part way through.</li>
+<li>With the projector closed there is nothing to dissolve on, so a fade costs
+  nothing and the take is instant.</li>
+<li>The preview shows the incoming scene straight away and says <strong>FADING</strong> with
+  the time left, because the preview is an editing surface rather than a copy
+  of the output.</li>
+</ul>
+<h3 id="the-show-timer">The show timer</h3>
+<p>Every scene has an <strong>active for</strong> time in seconds. Set it with
+<strong>Ctrl+Shift+T</strong>, or <strong>Duration…</strong> in the slot menu. <strong>Ctrl+T</strong> starts and
+stops the show timer.</p>
+<p>While the timer runs, each scene stays up for its own time and then the next
+occupied slot is taken automatically, wrapping round from the last filled slot
+to the first. Empty slots are skipped. The countdown appears on the live slot
+and in the status bar, and the scene that is coming next is queued, so every
+cut is instant.</p>
+<p>A duration of <strong>zero means hold</strong>: the run stops on that scene and stays there
+until you take the next one yourself. That is how to park in the middle of an
+otherwise automatic show - during a speech, say - and pick the run back up with
+a single key.</p>
+<p>The timer never takes the output away from you:</p>
+<ul>
+<li>Queueing a scene by hand overrides where the run goes next. The timer takes
+  whatever is queued when the time is up.</li>
+<li>Taking a scene by hand restarts the clock at that scene's full time.</li>
+<li>Changing the live scene's duration restarts its countdown.</li>
+<li>Stopping the timer leaves the output exactly as it is.</li>
+<li>With nothing live, the timer refuses to start rather than expiring into a
+  black projector.</li>
+</ul>
+<p>Durations are saved with the scene, so a show file carries its own running
+order and timing.</p>
+<h3 id="media-and-memory">Media and memory</h3>
+<p>Scenes that are not on screen are <strong>checked but not loaded</strong>. SurfaceCast stats
+every file a scene references and reports anything missing on the slot itself,
+without opening a decoder - so a slot can say "3/3 media ready" while costing
+nothing. <strong>Ctrl+R</strong> re-checks everything, which is what to press after copying
+files onto the show drive.</p>
+<p>Media is decoded when a scene is queued, preloaded or taken live. At most three
+scenes hold media at once; the least recently used is released first, and the
+live, queued and edited scenes are never released.</p>
+<p>Queue before you cut. A queued scene has already decoded and is paused on its
+first frame, so taking it is instant.</p>
+<h2 id="undo">Undo</h2>
+<p><strong>Ctrl+Z</strong> takes back the last change; <strong>Ctrl+Y</strong>, or <strong>Ctrl+Shift+Z</strong>, puts it
+back. The <strong>Edit</strong> menu names the step - <em>Undo delete</em>, <em>Undo keystone</em> - so
+you can see what you are about to take back before you press it.</p>
+<p>A few things are worth knowing:</p>
+<ul>
+<li><strong>Each scene has its own history.</strong> Undo never reaches into a scene you are
+  not looking at, and switching slots switches the stack with it.</li>
+<li><strong>A run of nudges is one step.</strong> Twenty taps on an arrow key rewind together,
+  rather than eating twenty steps out of the fifty a scene remembers.</li>
+<li><strong>Aiming grids are left alone.</strong> They are a setup aid rather than part of the
+  scene, so rewinding a nudge does not switch off the grid you were nudging
+  against.</li>
+<li><strong>Edits from a phone are on the same stack</strong>, so either end can take back
+  what the other did.</li>
+<li>Undo rewinds the unsaved marker too: step back past your first change and the
+  scene is clean again.</li>
+<li>Objects are rewound in place, so undoing a move on a live scene does not
+  restart the video that was playing.</li>
+</ul>
+<p>The canvas size is not part of it. That belongs to the projector rather than to
+you, so a resolution change is never something undo can rewind.</p>
+<h2 id="the-media-folder">The media folder</h2>
+<p>Images and video for your scenes live in one place: <strong><code>media/</code></strong> in the
+checkout. A built and installed copy has nowhere writable of its own, so it
+uses a <code>media</code> folder next to its settings instead. Either way you can point it
+somewhere else under <strong>File &gt; Settings &gt; Files</strong> — a folder on the show
+drive, say.</p>
+<ul>
+<li><strong>File &gt; Open media folder</strong> opens it in Explorer.</li>
+<li><strong>Object &gt; Add from media</strong> lists what is in it, newest first, and adds a
+  file as a layer in one click — the right kind of layer for the file.</li>
+<li>The <strong>Browse</strong> button on an image or video layer starts there too.</li>
+</ul>
+<h3 id="uploading-from-a-phone">Uploading from a phone</h3>
+<p>With the remote running, tap <strong>Media</strong> on the page, then <strong>Add photos or
+video</strong>. Pick from the camera roll and they upload straight into the media
+folder, ready for <strong>Object &gt; Add from media</strong> at the console.</p>
+<p><strong>This is off by default.</strong> Turn on <strong>Allow uploading media from the remote</strong>
+under <strong>File &gt; Settings &gt; Remote</strong>. It is a separate tick box from
+editing on purpose: everything else the remote does stays inside the show and
+can be undone, while this writes files onto the show machine — and the remote
+still has no password.</p>
+<p>What it will and will not do:</p>
+<ul>
+<li>Only file types SurfaceCast can open are accepted. Anything else is refused.</li>
+<li>Nothing is written outside the media folder, whatever the file is called. A
+  name carrying a path is reduced to its last part before anything else
+  happens.</li>
+<li>An upload never replaces a file that is already there. A clashing name is
+  stored alongside it as <code>clip-2.mp4</code>, so media a live scene is holding open
+  cannot be swapped underneath it.</li>
+<li>One file is capped at 512 MB, and an upload that does not say how big it is
+  gets refused rather than allowed to run on.</li>
+<li>With uploading off, the folder is not even listed to the phone.</li>
+</ul>
+<h2 id="files">Files</h2>
+<ul>
+<li><strong>File &gt; Save scene</strong> writes one scene as JSON.</li>
+<li><strong>File &gt; Save show</strong> writes every slot into a single file.</li>
+<li><strong>File &gt; Open scene</strong> loads into the slot you are editing; the slot menu opens
+  into a specific slot.</li>
+<li>Dragging a <code>.json</code> file onto the window opens it, detecting whether it is a
+  scene or a show.</li>
+</ul>
+<p>Positions are stored as a share of the canvas rather than in pixels, so a show
+authored on one projector still lines up on another.</p>
+<p>If media is missing when a scene loads, you are told which layers are affected,
+and those layers render a visible placeholder rather than silently disappearing.</p>
+<h3 id="autosave-and-crash-recovery">Autosave and crash recovery</h3>
+<p>A rig is hours of keystoning, and a machine driving unfamiliar video hardware
+will eventually fall over. So while anything in the slots is unsaved,
+SurfaceCast copies the whole show aside every minute.</p>
+<p>There is nothing to switch on. What is worth knowing about it:</p>
+<ul>
+<li>It writes <strong>only while something is unsaved</strong>. Save everything and the copy is
+  removed rather than left to go stale; during a show, with nobody editing,
+  autosave does nothing at all.</li>
+<li>A clean exit deletes the copy. So a copy still sitting there when SurfaceCast
+  next starts <strong>is</strong> the evidence of a crash - there is no separate marker that
+  can get out of step with it.</li>
+<li>On finding one, SurfaceCast tells you when it was written, how long ago that
+  was, which scenes are in it and which file the show came from, and offers
+  <strong>Recover it</strong> or <strong>Discard</strong>. Recovering replaces whatever is in the slots.</li>
+<li>Recovered scenes come back marked unsaved and with no file attached, so you
+  cannot save over the original by reflex, and closing without saving still
+  asks.</li>
+<li>The copy is an <strong>ordinary show file</strong>. If any of the above misbehaves, open it
+  by hand with <strong>File &gt; Open show</strong>. The path is shown under <strong>Details</strong> in the
+  recovery dialog, and in the settings dialog.</li>
+</ul>
+<p><strong>File &gt; Settings &gt; Files</strong> has a tick box and the interval
+(15 seconds to 15 minutes, one minute by default). Turning it off is reasonable
+on a machine where the show is already saved and never edited live; on any
+machine you are building a rig on, leave it alone.</p>
+<p>Each write goes to a temporary name and is renamed into place, so a crash
+<em>during</em> an autosave cannot destroy the previous copy. A write that fails - a
+full disk, a read-only profile - is reported once in the status bar rather than
+once a minute.</p>
+<h3 id="when-something-goes-wrong">When something goes wrong</h3>
+<p>SurfaceCast keeps a log. You do not have to turn it on and there is nothing to
+configure.</p>
+<p>This matters more than it sounds. A packaged build has no console window, so
+anything the application prints has nowhere to go; and an internal error does
+not stop it — the show carries on with a layer missing or a fade that never
+happened, and by the morning there is nothing left to look at. The log is what
+is left.</p>
+<p>It records the versions and every screen with its resolution and scaling, the
+show as you run it (scenes taken, blackouts, the timer, the remote going on and
+off), any media that failed to load, Qt's own complaints — a video that will not
+play usually says so here long before you notice a black rectangle — and the
+full traceback of any internal error, including ones in the video decoder's own
+thread.</p>
+<ul>
+<li><strong>Help &gt; Open log folder</strong> shows it. It is <code>logs\surfacecast.log</code> beside the
+  settings, capped at a megabyte with three older files kept, so a long show
+  cannot fill the disk.</li>
+<li><strong>Help &gt; Save diagnostics report</strong> writes one file with all of it together —
+  versions, screens, the state of every slot, your settings and the tail of
+  the log. That is the file to attach to a bug report — send it to
+  <code>help@surfacecast.app</code>, or open an issue on GitHub. It needs no Python and no
+  checkout, so it works on a venue machine.</li>
+</ul>
+<h2 id="settings">Settings</h2>
+<p><img alt="The Output tab of the settings window" src="../assets/images/settings-output.png"></p>
+<p><strong>File &gt; Settings</strong>, or <code>Ctrl+,</code>. Five tabs — <strong>Output</strong>, <strong>Console</strong>,
+<strong>Files</strong>, <strong>Remote</strong> and <strong>Lights</strong> — rather than one long column, because the
+column version was taller than a Surface Pro's screen and put its own OK button
+out of reach. Each page scrolls, the window is capped to the height the screen
+actually has, and the buttons live outside the tabs where they are always
+visible.</p>
+<p>The <strong>Remote</strong> and <strong>Lights</strong> tabs are covered in their own chapters below.
+Every control in every tab is listed in the <a href="../docs/reference.html">reference</a>.</p>
+<h3 id="output">Output</h3>
+<p>Which screen the projector window uses, and <strong>Identify</strong>, which flashes the
+number on every display so you can tell which physical projector is which.</p>
+<p><strong>Open the projector window at startup</strong> does nothing until a screen has been
+chosen, so a first launch never throws a black window at an unknown display.</p>
+<p><strong>Match the canvas to the screen resolution</strong> is on, and worth leaving on. The
+canvas then follows the projector's native resolution, which makes the output a
+1:1 map — no scaling, no softness. Untick it and set <strong>Canvas</strong> by hand only if
+you are authoring against a projector you do not have in front of you; the
+output is letterboxed to fit.</p>
+<h3 id="console">Console</h3>
+<p>The preview's own furniture: <strong>Show the alignment grid</strong>, how many
+<strong>Grid divisions</strong> it has, <strong>Snap objects to the grid</strong>, and
+<strong>Show safe-area guides</strong>. None of these are ever drawn on the output — they
+are editing aids, and the projector never sees them.</p>
+<p><strong>Master volume</strong> multiplies every video layer's own volume, so it is the one
+place to pull the whole show down without touching layers.</p>
+<p><strong>Confirm before taking a scene live</strong> asks before a click puts a scene on air.
+Off by default, because during a show the extra tap is in the way — but worth
+turning on for a machine where the strip is easy to catch with a sleeve.</p>
+<h3 id="files_1">Files</h3>
+<p><strong>Keep a recovery copy while work is unsaved</strong> and its interval are described
+under <a href="#autosave-and-crash-recovery">Autosave and crash recovery</a>. The path the
+copy is written to is shown beneath, so you can find it yourself if you need to.</p>
+<p><strong>Folder</strong> is the media folder — see <a href="#the-media-folder">The media folder</a>.
+<strong>Browse…</strong> picks one, <strong>Open</strong> shows it in the file manager, and leaving it
+empty uses the default.</p>
+<h2 id="remote-control-from-a-phone">Remote control from a phone</h2>
+<p><img alt="The remote control page on a phone" src="../assets/images/phone-show.png"></p>
+<p>SurfaceCast can serve a small control page over the local network, so the show
+can be run from a phone or tablet: blackout, the show timer, and the five
+scenes.</p>
+<p>The settings are in tabs — <strong>Output</strong>, <strong>Console</strong>, <strong>Files</strong> and
+<strong>Remote</strong> — so the window fits on a small screen. The OK and Cancel buttons
+sit below the tabs and are always visible.</p>
+<p><strong>It is off by default, and it has no password.</strong> Turn it on under
+<strong>File &gt; Settings &gt; Remote</strong>: tick the box, choose which network it
+should listen on, and accept the warning. The address to type into the phone is
+shown in the settings dialog and in the status bar while it is running.</p>
+<p>The port is <strong>50505</strong> unless you change it, and it does not move on its own —
+so a phone that has bookmarked the address keeps working. That number is in
+the range reserved for private use, which avoids the clashes the obvious 8080
+would bring on a machine that is also somebody's laptop. If something else on
+the show machine wants the port, change it here; <strong>Use default</strong> puts it back.
+If the port is taken when you turn the remote on, SurfaceCast says so rather
+than quietly moving to another one.</p>
+<p>If the address or port seems to change between launches, the settings file is
+not being written — SurfaceCast will say so in the status bar and in the log,
+which records on every launch where the settings came from and which port the
+remote will use.</p>
+<p>Choosing the network matters. The server binds to that one adapter, so putting
+it on the wireless network your phone is on does not also expose it to a wired
+production network or a VPN. The list includes a <strong>this computer only</strong> entry
+for trying it out without exposing it at all.</p>
+<p>Because there is no password, anyone who can reach the machine on that network
+can black out the output and change scenes. That is usually fine on a private
+show network. <strong>Do not turn it on while connected to public or guest Wi-Fi.</strong>
+The status bar shows the address of the last device that used it, so an
+unexpected visitor is visible.</p>
+<h3 id="using-it">Using it</h3>
+<table>
+<thead>
+<tr>
+<th>Tap</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Media</strong></td>
+<td>The media folder, and uploading from the camera roll</td>
+</tr>
+<tr>
+<td>A scene, once</td>
+<td>Queue it - the output does not change</td>
+</tr>
+<tr>
+<td>The same scene again</td>
+<td>Take it live</td>
+</tr>
+<tr>
+<td><strong>TAKE QUEUED</strong></td>
+<td>Take whatever is queued, like <code>Space</code> at the console</td>
+</tr>
+<tr>
+<td><strong>SHOW TIMER</strong></td>
+<td>Start or stop the automatic run; the button shows the countdown</td>
+</tr>
+<tr>
+<td><strong>BLACKOUT</strong></td>
+<td>Blank the output; tap again to restore</td>
+</tr>
+</tbody>
+</table>
+<p>The two-tap rule is the same as the number keys at the console, and for the
+same reason: one tap can be an accident, two is a decision.</p>
+<p>Each scene shows its <strong>active for</strong> time, and the live one shows the countdown
+while the timer runs, so the page reads as the running order. A scene that
+fades in says so under its name.</p>
+<p>The page mirrors the console, so it shows which scene is live, which is queued
+and which scenes have missing media, and it updates when someone changes
+something at the laptop. It carries no external links or fonts, so it works on
+a show network with no route to the internet.</p>
+<h3 id="editing-from-the-phone">Editing from the phone</h3>
+<p><img alt="Editing a scene from the phone" src="../assets/images/phone-edit.png"></p>
+<p>Flip <strong>Edit mode</strong> on the page and tapping a scene stops queueing it and opens
+it for editing instead. <strong>Opening a scene to edit never puts it on air</strong> - it
+does the same thing as right clicking a slot at the console, loading the scene
+and making it the one the preview shows.</p>
+<p>You get <strong>Undo</strong> and <strong>Redo</strong>, then the scene's <strong>active for</strong> time, with
+buttons to add or take off five or thirty seconds and a <strong>hold</strong> button that
+clears it, then its <strong>transition</strong> - Cut or Fade, with buttons to add or take
+off half a second - then the scene's objects, and for whichever is selected:</p>
+<ul>
+<li>an arrow pad with <strong>move</strong>, <strong>size</strong>, <strong>rotate</strong> and <strong>keystone</strong> modes, and a
+  step button for one pixel or ten;</li>
+<li>for keystone, buttons to pick which corner the arrows move, matching the
+  marker drawn on the projection;</li>
+<li><strong>Visible</strong>, <strong>Lock</strong> and <strong>Aim</strong> toggles;</li>
+<li><strong>Opacity</strong> and <strong>Vignette</strong> sliders, plus <strong>Volume</strong> and <strong>Mute</strong> on a video.</li>
+</ul>
+<p>The console follows along: the selection, the preview and the layer list all
+move with the phone, so nothing happens off-screen.</p>
+<p><strong>Undo</strong> and <strong>Redo</strong> are at the top of the edit view, naming the step they
+will take back. Phone edits go on the same stack as the console's, so either
+end can take back what the other did.</p>
+<p>Even so, editing from a phone can undo careful alignment work in a tap, so once
+a rig is aligned it is worth unticking <strong>Allow editing scenes from the remote</strong>
+in settings. Show control - blackout, the show timer and scene changes - keeps
+working with editing locked off, and the page says so rather than failing
+silently.</p>
+<h2 id="lights-that-follow-the-picture">Lights that follow the picture</h2>
+<p>SurfaceCast can drive a <a href="https://kno.wled.ge/">WLED</a> controller from the
+projected output, so LED strip, uplights or a backdrop wash change with the
+projection instead of being cued separately. The colors are read off the
+picture every frame and sent to the controller over the network.</p>
+<p>It is <strong>off by default</strong> — it puts traffic on the network and takes the
+controller over, neither of which should start on its own.</p>
+<h3 id="setting-it-up">Setting it up</h3>
+<p><img alt="The light zone editor, with each zone filled by the color it is sending" src="../assets/images/lights-zones.png"></p>
+<p>Open <strong>Output &gt; Light zones</strong>. Type the controller's address into
+<strong>Address</strong> — the same address its own web page is on — and leave the port at
+<strong>21324</strong> unless you have changed it in WLED. That is WLED's realtime port, not
+its web port.</p>
+<p>Then build a layout and tick <strong>Send to the lights</strong>. The picture in the dialog
+is the live output with your zones drawn on it, each filled with the color it
+is currently sending, so you can see what every lamp is about to do before
+anything is aimed.</p>
+<p>One controller, named outright. SurfaceCast does not broadcast and does not go
+looking for controllers, because a broadcast frame would seize every WLED on
+the network — including one belonging to somebody else's rig on a shared show
+network.</p>
+<h3 id="zones">Zones</h3>
+<p>A <strong>zone</strong> is a rectangle of the canvas tied to a run of LEDs. Everything in
+that run gets the zone's average color:</p>
+<ul>
+<li>a floodlight or one par can is <strong>one LED</strong>;</li>
+<li>a length of strip washing one panel is <strong>however many LEDs it has</strong>, all the
+  same color;</li>
+<li>a strip that should follow the picture along its length is <strong>many narrow
+  zones</strong>, one per group of LEDs.</li>
+</ul>
+<p><strong>Build grid</strong> lays out a rectangle of zones, numbered left to right then top
+to bottom — a strip along the bottom of the surface is a grid one row deep.
+<strong>Build ring</strong> lays them clockwise round the border from the top left, which is
+how ambient strip is usually hung. Both replace everything, so start with one
+and then adjust.</p>
+<p>To adjust a zone: drag it to move, drag the square in its bottom right corner
+to resize, or type exact numbers. <strong>First LED</strong> counts from 1, the way WLED's
+own segment editor does. <strong>Gain</strong> brightens or dims one zone before it is sent —
+a practical sitting next to a projected wash usually wants less than the
+picture, and a deliberately dim corner of the picture often wants more.</p>
+<p>Gain changes brightness only, never the color. Past the point where the
+brightest of the three channels reaches full, turning it up further does
+nothing: the lamp is already as bright as that color goes, and the only way to
+look brighter would be to send a paler color than the picture is showing. If a
+zone looks dim at a gain of 4, the picture in it really is dark — make the zone
+smaller, so it reads the bright part rather than averaging it with the dark.</p>
+<h3 id="which-way-the-strip-runs">Which way the strip runs</h3>
+<p>A zone drives a run of pixels, and <strong>Run direction</strong> says what that run does
+across the zone's rectangle.</p>
+<p><em>One color across the run</em> is the default and what every rig did before this
+setting existed: the whole rectangle is averaged and every pixel in the run
+gets the same color. That is what a wash wants — four pars lighting one wall,
+or a strip hidden behind a panel.</p>
+<p>The four directions divide the rectangle into as many slices as the zone has
+pixels, so each pixel reads its own part of the picture. A strip of 30 LEDs
+across the bottom of the projection, set to <em>Left to right</em>, gives you 30
+colors following the picture above it. The name says where the <strong>first</strong> pixel
+sits, so a strip wired from the other end is <em>Right to left</em> — there is no
+separate reversed setting to find.</p>
+<p><strong>A strip that folds back on itself is two zones, not a special setting.</strong> Say
+60 LEDs run left to right along the top of a wall and then back along the
+bottom:</p>
+<table>
+<thead>
+<tr>
+<th>Zone</th>
+<th>Rectangle</th>
+<th>First LED</th>
+<th>How many</th>
+<th>Run direction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>out</code></td>
+<td>top half of the wall</td>
+<td>1</td>
+<td>30</td>
+<td>Left to right</td>
+</tr>
+<tr>
+<td><code>back</code></td>
+<td>bottom half</td>
+<td>31</td>
+<td>30</td>
+<td>Right to left</td>
+</tr>
+</tbody>
+</table>
+<p>The fold is where the two meet: LED 30 and LED 31 are physically next to each
+other at the far end, and both zones put them there. Zones are allowed to
+overlap, so the two legs of a fold can watch the same wall if that is how the
+strip is actually hung — give them the same rectangle instead of two halves.</p>
+<p>The same two-zone trick handles any shape a single strip can be bent into: one
+zone per straight leg, each with its own direction, numbered end to end.</p>
+<h3 id="when-the-zones-are-right-but-the-order-is-wrong">When the zones are right but the order is wrong</h3>
+<p><strong>Build grid</strong> and <strong>Build ring</strong> make one zone per LED, numbered left to right
+then top to bottom. Which order is correct is a fact about the installation,
+and nothing on screen can show it — so if the picture comes out mirrored,
+rotated or zig-zagged along the strip, the zones are in the right places and
+only the numbering is wrong.</p>
+<p>Pick how the strip was actually run under <strong>Wiring</strong> and press <strong>Renumber</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Wiring</th>
+<th>The strip was run…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rows, left to right</td>
+<td>across, then back to the left to start the next row</td>
+</tr>
+<tr>
+<td>Rows, folded back each row</td>
+<td>across, then folded at the end and back the other way</td>
+</tr>
+<tr>
+<td>Columns, top to bottom</td>
+<td>down, then back to the top for the next column</td>
+</tr>
+<tr>
+<td>Columns, folded back each column</td>
+<td>down, then folded at the bottom and back up</td>
+</tr>
+<tr>
+<td>Reverse what it is now</td>
+<td>the same path, from the other end</td>
+</tr>
+</tbody>
+</table>
+<p><em>Folded back each row</em> is the common one: a strip long enough to cover a wall
+in rows is folded at the end of each row rather than cut and re-joined.</p>
+<p>Renumbering moves nothing. The zones keep their rectangles and their place in
+the list, so if the first guess is wrong you can try another without
+rebuilding the rig.</p>
+<p>Zones may overlap; two lamps are allowed to watch the same part of the picture.
+LEDs no zone covers are sent black rather than left at whatever they were
+showing.</p>
+<p>Edits reach the lights as you make them, not when you press OK, because the
+only way to know a zone is aimed at the right thing is to watch the actual
+lamp. <strong>Cancel</strong> puts the rig back the way it was.</p>
+<h3 id="cues-what-a-scene-tells-the-lights">Cues: what a scene tells the lights</h3>
+<p><img alt="One scene's light cue, holding a color" src="../assets/images/lights-cue.png"></p>
+<p>Zones say where the lamps are. A <strong>cue</strong> says what they should do in a given
+scene, and it lives in the scene file rather than with the machine — the same
+split a lighting desk makes between the patch and the cue. A show authored in a
+rehearsal room then plays in a venue whose strip is hung differently without a
+single color being re-picked.</p>
+<p>Open a scene's cue from its right-click menu, under <strong>Lights…</strong>, beside its
+duration, transition and background. The menu entry says what the cue is, so a
+glance down the strip reads like a cue sheet.</p>
+<p>There are three choices:</p>
+<ul>
+<li><strong>Follow the picture</strong> — colors come off the projection. This is what the
+  lights do with no cue at all, and what every scene written before cues
+  existed reads as.</li>
+<li><strong>Hold a color</strong> — the lamps sit still whatever the picture does. This is
+  what an interview two-shot wants when the wall behind it should not flicker,
+  or what a scene with fast-cut video wants when the room should stay calm.</li>
+<li><strong>Stay dark</strong> — dark for this scene only, without blacking the projector out.</li>
+</ul>
+<p>Each scene also has its own <strong>intensity</strong>, applied on top of each zone's gain. A
+scene that is a bright wash often wants the practicals down; one that is nearly
+dark often wants them up.</p>
+<p><strong>A cue arrives over the scene's own transition.</strong> Give a scene a three second
+fade and the lamps take three seconds to get there, rather than snapping at
+either end. Two scenes that both follow the picture need no fading of their own
+— the picture they are sampling is already dissolving.</p>
+<p>The quickest way to author a hold is <strong>Use what is on screen now</strong>: it freezes
+what the zones are reading off that scene, which you can then nudge. Colors are
+either one per zone, or <strong>one color for the whole rig</strong> — and one color is
+what survives a change of venue, because no number of zones can make it wrong.
+If a rig has more zones than the cue has colors, the last color carries on
+rather than the extra lamps going dark.</p>
+<p>The cue editor shows that scene's own picture, not the live output. The scene
+you are cueing is usually not the one on air, and showing the wrong scene's
+colors would be worse than showing none. Zones can be clicked there to pick one
+out, but not dragged: moving a zone is a change to the venue's rig, and doing it
+from inside a scene would be a trap.</p>
+<h3 id="what-the-lights-are-following">What the lights are following</h3>
+<p>The <strong>projector output</strong>, whenever the projector window is open. That is the
+real output, so the lights go out with a blackout and cross-fade with a
+dissolve instead of jumping at the moment the incoming scene takes over.</p>
+<p>With no projector window open there is no composite to sample, so the lights
+follow the live scene on its own. A rig set up that way will look right, and
+then behave slightly differently in the venue during transitions — so do the
+aiming with the projector window open.</p>
+<p>The zones are stored with this computer, not in the show file: they describe
+where the lamps physically are in front of the projection, and that does not
+change when the show does. They are stored as a share of the canvas, so a rig
+survives a change of projector resolution.</p>
+<h3 id="while-it-is-running">While it is running</h3>
+<p>The status bar shows how many LEDs are being driven, and its tooltip says where
+to. <strong>Lights: !</strong> means the lights are switched on but cannot send — no address
+or no zones — and the tooltip says which.</p>
+<p><strong>Refresh</strong> is how often the lights are updated; 30 times a second is smooth
+and costs about a hundredth of a core. Going higher mostly adds network
+traffic, and on a long strip the controller itself becomes the limit.</p>
+<p>Every frame is a complete picture, so a dropped packet costs one frame and
+nothing else. There is no handshake and nothing to reconnect: a controller that
+is switched off is simply not there, which is why the status line shows what
+SurfaceCast is sending rather than claiming a connection it cannot verify.</p>
+<p>Each packet carries a <strong>hold time</strong> of two seconds. If SurfaceCast is closed,
+crashes, or the network drops, the rig goes back to its own programming two
+seconds later instead of freezing on the last frame that arrived — which at the
+end of a show is usually black, and a rig that looks unplugged is worse than a
+rig running a default effect. Turning the lights off deliberately hands the
+controller straight back without waiting.</p>
+<p>Rigs up to 490 LEDs go out in one packet; longer ones are split across several,
+addressed so nothing is lost at the joins. The limit is 4096 LEDs.</p>
+<h3 id="dmx-fixtures-art-net-and-sacn">DMX fixtures: Art-Net and sACN</h3>
+<p>A zone can drive DMX lamps instead of LED pixels. Under <strong>Output &gt; Light
+zones</strong>, set <strong>DMX</strong> to <strong>Art-Net</strong> or <strong>sACN / E1.31</strong>, then set any zone's
+<strong>Goes to</strong> to <em>DMX fixture</em> and give it a universe, a first channel and a
+fixture.</p>
+<p>A rig can be <strong>part strip and part DMX</strong>. The two halves go out on the same
+tick, each in its own units, and you only have to configure the half you own —
+a rig of nothing but pars never needs a WLED address.</p>
+<p><strong>Art-Net</strong> needs the node's address typed in. SurfaceCast will not broadcast,
+because a broadcast frame takes over every node on the network including
+somebody else's rig. <strong>sACN</strong> left empty multicasts, which is the normal way to
+run it: a node hears only the universes it is patched to, so nothing else is
+disturbed. Name a node there to send to that one alone.</p>
+<p>A zone's <strong>How many</strong> works the same as on a strip: it is how many fixtures in
+a row take the color, each one further along by its own channel count. Four
+pars washing one wall are one zone, not four.</p>
+<p><strong>Turning the lights off puts DMX lamps out explicitly.</strong> WLED lapses on its
+own a couple of seconds after packets stop; DMX has no such thing, and a
+fixture holds the last level it was given for ever. So switching off, closing
+SurfaceCast, or pointing at a different node all send a blackout frame first.</p>
+<p>During a blackout the color channels go to zero and <strong>held channels stay where
+they are</strong> — a lamp goes dark, and a moving head does not slew across the stage
+on the way there.</p>
+<h3 id="a-usb-dmx-adapter">A USB DMX adapter</h3>
+<p>The simplest way to get DMX out: no node address, no universe patching on a box
+across the room, no wondering which network the show is on. Set <strong>DMX</strong> to
+<strong>USB adapter</strong>, pick it from the list, and say which universe it carries.</p>
+<p>The list names each serial port along with what it says it is, so an adapter is
+usually recognisable — and usually the one that was not there before you plugged
+it in. <strong>Rescan</strong> looks again after plugging one in. A port SurfaceCast was set
+up with but cannot find is shown as <strong>(not connected)</strong> rather than quietly
+replaced by whatever else is on the machine.</p>
+<p>This speaks the <strong>Enttec DMX USB Pro</strong> protocol, which is what an adapter with a
+microcontroller inside understands: Enttec's own, DMXKing's, and most boxes sold
+as a "USB DMX512 interface". SurfaceCast posts whole frames and the adapter's
+own chip does the part that has to be punctual — generating the DMX break and
+refreshing the line at the proper rate. That division of labour is why these are
+reliable.</p>
+<p><strong>A widget carries one DMX line</strong>, so it sends the universe you nominate and
+nothing else. Zones on any other universe go out over the network, or not at
+all. Turning the lights off sends a blackout down the cable first — more
+important here than on a node, because unplugging USB leaves the adapter
+happily sending its last frame on its own.</p>
+<p>It needs no extra software: the serial support is part of Qt, which SurfaceCast
+already ships.</p>
+<p><strong>If your adapter does nothing</strong>, it may be the other kind. The very cheapest
+dongles are a bare FTDI chip with no microcontroller at all — sold as "Open DMX
+USB" — and they need the PC itself to generate the DMX timing, which is a
+different mechanism and not what this sends. If the port opens, the status line
+counts frames, and no lamp moves, that is the likely reason.</p>
+<h3 id="fixtures-including-ones-with-no-manual">Fixtures, including ones with no manual</h3>
+<p><img alt="The fixture builder, describing a moving head channel by channel" src="../assets/images/lights-fixture.png"></p>
+<p><strong>Output &gt; Light zones &gt; Fixtures…</strong> is where you say how a kind of lamp lays
+its channels out. Two are built in, and between them they cover most of what
+gets called a "generic RGB par":</p>
+<ul>
+<li><strong>RGB (3 channels)</strong> — red, green, blue.</li>
+<li><strong>Dimmer + RGB (4 channels)</strong> — the same with a master dimmer in front. This
+  is the one that catches people out: send a four-channel par three channels
+  and it stays dark however right the color is, because channel one was the
+  dimmer.</li>
+</ul>
+<p>For anything else — the cheap moving heads that arrive with a mode dial and no
+paperwork — build it. Set how many channels it has, then say what each one
+does. <strong>Red, green and blue follow the picture</strong>; everything else is held where
+you put it, which is exactly what you want for a channel you have identified
+but do not want driven: park the gobo wheel open, park pan and tilt so the head
+points at the surface, leave the dimmer up.</p>
+<p><strong>Find a channel</strong> is how you work out which is which without a manual. Tick
+<strong>Send now</strong> with <strong>Sweep channel</strong> on, and SurfaceCast sends that one channel
+at the slider's value with every other channel at zero. Move the slider and
+watch the lamp: whatever changes is that channel. Work along the fixture
+writing each one down, then untick <strong>Sweep</strong> to send the whole thing your test
+color and check the result.</p>
+<p>It sends live, to the universe and first channel in the panel, so patch the
+fixture somewhere harmless first if the rig is already hung. Stopping sends a
+blackout, so the lamp does not stay stuck wherever the sweep left it.</p>
+<p>Renaming a fixture takes its zones with it. Deleting one leaves any zone that
+named it falling back to plain RGB — lit wrongly rather than silently stopped,
+because a lamp doing the wrong thing is one you notice.</p>
+<p><strong>Not covered yet:</strong> white, amber and UV emitters have no role of their own, so
+on an RGBW fixture the white channel is a held one. Mixing it well is a
+per-fixture judgement and a guess at it looks wrong on stage rather than
+obviously broken on a bench. Pan and tilt are held too — pointing a moving head
+from a scene is a different feature, not a color one.</p>
+<h2 id="keyboard-reference">Keyboard reference</h2>
+<p>Everything here is also in the application. The <strong>Help</strong> menu opens this guide,
+the scene file format, the performance notes and the licences in a reader
+window, so an installed SurfaceCast carries its own documentation and needs
+nothing registered for <code>.md</code> files. <strong>Open the folder</strong> in that window shows
+the same files on disk if you would rather read them in your own editor.</p>
+<p><img alt="The help window, open beside the console" src="../assets/images/help.png"></p>
+<p>Press <code>F1</code> in the application for the full reference. It opens a window with
+three tabs - <strong>Getting started</strong>, <strong>Keyboard</strong> and <strong>Mouse</strong> - and stays open
+while you work, so you can leave it on the second half of the desk during a
+rig. The menu shortcuts it lists are read from the menus themselves, so they
+cannot fall out of step with the application.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code>-<code>9</code></td>
+<td>Queue scene; press again to take</td>
+</tr>
+<tr>
+<td><code>Space</code></td>
+<td>Take the queued scene</td>
+</tr>
+<tr>
+<td><code>Alt</code>+<code>1</code>-<code>9</code></td>
+<td>Edit scene without going live</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+N</code></td>
+<td>Add a scene slot</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+Left</code> / <code>Right</code></td>
+<td>Move this scene along the strip</td>
+</tr>
+<tr>
+<td><code>Ctrl</code>+<code>1</code>-<code>6</code></td>
+<td>Add video / image / gradient / mask / mesh image / mesh video</td>
+</tr>
+<tr>
+<td><code>W</code> then drag</td>
+<td>Pull a mesh point; <code>Tab</code> steps, <code>Alt</code>+arrows nudge</td>
+</tr>
+<tr>
+<td><code>Ctrl+Z</code></td>
+<td>Undo</td>
+</tr>
+<tr>
+<td><code>Ctrl+Y</code> or <code>Ctrl+Shift+Z</code></td>
+<td>Redo</td>
+</tr>
+<tr>
+<td><code>Ctrl+D</code> / <code>Del</code></td>
+<td>Duplicate / delete the selected object</td>
+</tr>
+<tr>
+<td><code>Ctrl+Up</code> / <code>Ctrl+Down</code></td>
+<td>Raise / lower the selected object</td>
+</tr>
+<tr>
+<td>Arrows / <code>Shift</code>+arrows</td>
+<td>Nudge by 1 / 10 output pixels</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td>Aiming grid on the selected object</td>
+</tr>
+<tr>
+<td><code>Shift</code>+<code>A</code></td>
+<td>Clear every aiming grid</td>
+</tr>
+<tr>
+<td><code>Tab</code> / <code>Shift</code>+<code>Tab</code></td>
+<td>Choose the keystone corner while aiming</td>
+</tr>
+<tr>
+<td><code>Page Up</code> / <code>Page Down</code></td>
+<td>Rotate the selected object</td>
+</tr>
+<tr>
+<td><code>Shift</code>+<code>F5</code></td>
+<td>Reset panel layout</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>Layout mode (handles)</td>
+</tr>
+<tr>
+<td><code>W</code></td>
+<td>Keystone mode</td>
+</tr>
+<tr>
+<td><code>G</code> / <code>Shift+G</code></td>
+<td>Grid / snap to grid</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>Blackout</td>
+</tr>
+<tr>
+<td><code>Ctrl+T</code></td>
+<td>Start / stop the show timer</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+T</code></td>
+<td>Set how long this scene is active for</td>
+</tr>
+<tr>
+<td><code>F5</code></td>
+<td>Projector window</td>
+</tr>
+<tr>
+<td><code>F2</code></td>
+<td>Rename scene</td>
+</tr>
+<tr>
+<td><code>Ctrl+R</code></td>
+<td>Re-check all media</td>
+</tr>
+<tr>
+<td><code>Ctrl+N</code> / <code>Ctrl+O</code> / <code>Ctrl+S</code></td>
+<td>New / open / save scene</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+S</code></td>
+<td>Save scene as</td>
+</tr>
+<tr>
+<td><code>Ctrl+L</code></td>
+<td>Load this scene's media now</td>
+</tr>
+<tr>
+<td><code>Ctrl+,</code></td>
+<td>Settings</td>
+</tr>
+<tr>
+<td><code>Ctrl+Q</code></td>
+<td>Exit</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="../features.html">Features</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="../docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="../license.html">Licence</a></li>
+          <li><a href="../docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="../license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scene file format - SurfaceCast</title>
+<meta name="description" content="The JSON schema scenes and shows are saved in.">
+<meta property="og:title" content="Scene file format - SurfaceCast">
+<meta property="og:description" content="The JSON schema scenes and shows are saved in.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="doc-layout">
+    <nav class="doc-nav"><h4>On this page</h4><ul class="doc-toc"><li><a href="#scene-document">Scene document</a></li><li><a href="#show-document">Show document</a></li><li><a href="#common-object-fields">Common object fields</a></li><li><a href="#transform">Transform</a></li><li><a href="#type-specific-fields">Type specific fields</a></li><li><a href="#colors">Colors</a></li><li><a href="#robustness">Robustness</a></li><li><a href="#mesh-objects">Mesh objects</a></li></ul><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html">Building</a></li><li><a href="scene-format.html" aria-current="page">Scene file format</a></li><li><a href="settings-format.html">Settings format</a></li><li><a href="mesh-video.html">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
+    <div class="doc-body">
+      <h1 id="scene-file-format">Scene file format</h1>
+<p>SurfaceCast writes plain, indented JSON. Files are written to a temporary name
+and then renamed into place, so an interrupted save cannot truncate an existing
+scene.</p>
+<h2 id="scene-document">Scene document</h2>
+<pre><code class="language-json">{
+  &quot;format&quot;: &quot;surfacecast.scene&quot;,
+  &quot;version&quot;: 1,
+  &quot;app_version&quot;: &quot;0.1.0&quot;,
+  &quot;id&quot;: &quot;5f1c2a90b3d4&quot;,
+  &quot;name&quot;: &quot;Main stage&quot;,
+  &quot;background&quot;: &quot;#000000ff&quot;,
+  &quot;canvas&quot;: [1920, 1080],
+  &quot;notes&quot;: &quot;&quot;,
+  &quot;duration&quot;: 0,
+  &quot;transition&quot;: &quot;cut&quot;,
+  &quot;transition_seconds&quot;: 1.0,
+  &quot;lights&quot;: {
+    &quot;mode&quot;: &quot;hold&quot;,
+    &quot;intensity&quot;: 0.7,
+    &quot;colors&quot;: [&quot;#204080&quot;]
+  },
+  &quot;objects&quot;: []
+}
+</code></pre>
+<p><code>objects</code> is ordered <strong>top first</strong>: the first entry is composited over the rest.</p>
+<p><code>duration</code> is how many seconds the show timer holds this scene before moving
+on. Zero - the default, and what a file written before this field existed reads
+as - means hold here until the next scene is taken by hand. Values are clamped
+to 12 hours on load.</p>
+<p><code>transition</code> is how the scene arrives on the output when it is taken: <code>"cut"</code>
+(the default, and what an older file reads as) or <code>"fade"</code>, which
+cross-dissolves from whatever was on air. <code>transition_seconds</code> is how long that
+fade takes, clamped to 0.1-30 seconds on load. It is kept even while the
+transition is a cut, so switching back to a fade does not lose the time.
+Anything else in <code>transition</code> reads as a cut rather than failing the load.</p>
+<p><code>lights</code> is what this scene tells the practical lights to do, and it is
+<strong>omitted entirely</strong> unless the scene says something - so a show that never
+touches lights writes exactly the file it wrote before this field existed, and
+a file without it reads as "follow".</p>
+<ul>
+<li><code>mode</code> is <code>"follow"</code> (take the colors off the picture, the default),
+  <code>"hold"</code> (sit on the colors below), or <code>"off"</code> (dark for this scene).
+  Anything else reads as <code>"follow"</code>.</li>
+<li><code>intensity</code> is this scene's own level, multiplied on top of each zone's gain.
+  Clamped to 0-2 on load.</li>
+<li><code>colors</code> are the held colors as <code>#rrggbb</code>, one per zone, and are only read
+  in <code>"hold"</code>. <strong>One entry means the whole rig</strong>, which is what survives moving
+  to a venue whose rig has a different number of zones; past the end of a
+  longer list the last color carries on. An empty list holds dark.</li>
+</ul>
+<p>The zones themselves are deliberately <em>not</em> in here. Which part of the canvas
+drives which LEDs describes where the lamps physically are, so it lives with
+the machine (<code>settings.json</code>) and stays behind when a show travels. This is the
+same split a lighting desk makes between the patch and the cue.</p>
+<p>Unknown object types are skipped on load rather than failing the whole file, so
+a scene written by a later version still opens. A file whose <code>version</code> is higher
+than the running build is refused with an explanatory message.</p>
+<h2 id="show-document">Show document</h2>
+<p>A show bundles up to five scenes:</p>
+<pre><code class="language-json">{
+  &quot;format&quot;: &quot;surfacecast.show&quot;,
+  &quot;version&quot;: 1,
+  &quot;active_slot&quot;: 0,
+  &quot;slots&quot;: [ { &quot;slot&quot;: 0, &quot;scene&quot;: { &quot;...&quot;: &quot;a scene document&quot; } } ]
+}
+</code></pre>
+<h3 id="the-autosave-copy">The autosave copy</h3>
+<p>The recovery file written by autosave is a show document with one extra key,
+which loaders ignore:</p>
+<pre><code class="language-json">{
+  &quot;recovery&quot;: {
+    &quot;saved_at&quot;: 1758153600.0,
+    &quot;source&quot;: &quot;C:\\shows\\gala.json&quot;,
+    &quot;scene_names&quot;: [&quot;Walk-in&quot;, &quot;Act one&quot;]
+  }
+}
+</code></pre>
+<p><code>saved_at</code> is a Unix timestamp, <code>source</code> the file the show came from (empty if
+it has never been saved), and <code>scene_names</code> is there so the recovery dialog can
+describe the file without loading the scenes and their media. Because the rest
+of the document is an ordinary show, the file opens with <strong>File &gt; Open show</strong>
+whatever happens to the dialog.</p>
+<h2 id="common-object-fields">Common object fields</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>string</td>
+<td><code>video</code>, <code>image</code>, <code>mesh_image</code>, <code>mesh_video</code>, <code>gradient</code> or <code>mask</code></td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td>Unique within the scene</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Shown in the layer list</td>
+</tr>
+<tr>
+<td><code>visible</code></td>
+<td>bool</td>
+<td>Drawn or not</td>
+</tr>
+<tr>
+<td><code>locked</code></td>
+<td>bool</td>
+<td>Ignored by clicks and drags in the preview</td>
+</tr>
+<tr>
+<td><code>opacity</code></td>
+<td>0.0-1.0</td>
+<td>Layer opacity</td>
+</tr>
+<tr>
+<td><code>transform</code></td>
+<td>object</td>
+<td>Placement, see below</td>
+</tr>
+</tbody>
+</table>
+<h2 id="transform">Transform</h2>
+<pre><code class="language-json">{
+  &quot;rect&quot;: [0.25, 0.25, 0.5, 0.5],
+  &quot;rotation&quot;: 12.5,
+  &quot;corner_offsets&quot;: [[0.01, 0.0], [0.0, 0.0], [0.0, -0.02], [0.0, 0.0]]
+}
+</code></pre>
+<ul>
+<li><code>rect</code> is <code>[x, y, width, height]</code> as a <strong>share of the canvas</strong>, not pixels. A
+  scene authored at 1920x1080 therefore lines up at any other resolution.</li>
+<li><code>rotation</code> is in degrees, clockwise, about the rectangle's center. It is
+  applied in pixel space, so a rotated object is not sheared by the canvas
+  aspect ratio.</li>
+<li><code>corner_offsets</code> is the keystone correction: four <code>[dx, dy]</code> pairs in
+  normalized units for the top-left, top-right, bottom-right and bottom-left
+  corners, applied after rotation. The key is omitted entirely when there is no
+  warp.</li>
+</ul>
+<p>The final quad is <code>rotate(rect) + corner_offsets</code>, which is why the numeric
+rectangle fields keep working after a corner pin.</p>
+<h2 id="type-specific-fields">Type specific fields</h2>
+<h3 id="video"><code>video</code></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td>string</td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>fit</code></td>
+<td><code>contain</code> | <code>cover</code> | <code>stretch</code></td>
+<td><code>cover</code></td>
+</tr>
+<tr>
+<td><code>loop</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>autoplay</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>restart_on_live</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>muted</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>volume</code></td>
+<td>0.0-1.0</td>
+<td><code>1.0</code></td>
+</tr>
+<tr>
+<td><code>rate</code></td>
+<td>0.1-4.0</td>
+<td><code>1.0</code></td>
+</tr>
+<tr>
+<td><code>in_point</code>, <code>out_point</code></td>
+<td>seconds</td>
+<td><code>0.0</code> (<code>out_point</code> of 0 means "to the end")</td>
+</tr>
+<tr>
+<td><code>audio_device</code></td>
+<td>string</td>
+<td><code>""</code> (system default)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="image"><code>image</code></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td>string</td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>fit</code></td>
+<td><code>contain</code> | <code>cover</code> | <code>stretch</code></td>
+<td><code>contain</code></td>
+</tr>
+<tr>
+<td><code>smooth</code></td>
+<td>bool</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>flip_h</code>, <code>flip_v</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="gradient"><code>gradient</code></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gradient_type</code></td>
+<td><code>solid</code> | <code>linear</code> | <code>radial</code> | <code>conical</code></td>
+<td><code>linear</code></td>
+</tr>
+<tr>
+<td><code>stops</code></td>
+<td>list of <code>[position, color]</code></td>
+<td>white to black</td>
+</tr>
+<tr>
+<td><code>angle</code></td>
+<td>degrees</td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><code>center</code></td>
+<td><code>[x, y]</code>, 0-1 within the object</td>
+<td><code>[0.5, 0.5]</code></td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>0.01-4.0</td>
+<td><code>0.5</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="mask"><code>mask</code></h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>shape</code></td>
+<td><code>rectangle</code> | <code>ellipse</code> | <code>polygon</code></td>
+<td><code>rectangle</code></td>
+</tr>
+<tr>
+<td><code>points</code></td>
+<td>list of <code>[x, y]</code>, 0-1 within the object</td>
+<td><code>[]</code></td>
+</tr>
+<tr>
+<td><code>feather</code></td>
+<td>0.0-1.0</td>
+<td><code>0.0</code></td>
+</tr>
+<tr>
+<td><code>invert</code></td>
+<td>bool</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td><code>#RRGGBBAA</code></td>
+<td><code>#000000ff</code></td>
+</tr>
+<tr>
+<td><code>corner_radius</code></td>
+<td>0.0-1.0</td>
+<td><code>0.0</code></td>
+</tr>
+</tbody>
+</table>
+<p>An inverted mask covers the whole canvas except its shape, so its rectangle
+positions the hole rather than bounding the cover.</p>
+<h2 id="colors">Colors</h2>
+<p>Colors are <code>#RRGGBBAA</code>. <code>#RGB</code> and <code>#RRGGBB</code> are accepted on load and
+normalized to eight digits on save.</p>
+<h2 id="robustness">Robustness</h2>
+<p>Every value is validated on load. Numbers outside their range are clamped rather
+than rejected, unknown enum values fall back to the default, malformed colors
+fall back to black, and a gradient with fewer than two stops is repaired. A
+corrupt field costs you that field, not the scene.</p>
+<h2 id="mesh-objects">Mesh objects</h2>
+<p>A <code>mesh_image</code> is an <code>image</code> with one extra field, and a <code>mesh_video</code> is a
+<code>video</code> with two - the same <code>mesh</code>, plus a <code>smooth</code> flag, because turning
+smooth sampling off is the one reliable way to buy headroom when a machine
+cannot keep up with warping every frame. It carries every image field
+(<code>path</code>, <code>fit</code>, <code>smooth</code>, <code>flip_h</code>, <code>flip_v</code>) plus:</p>
+<pre><code class="language-json">&quot;mesh&quot;: {
+  &quot;columns&quot;: 2,
+  &quot;rows&quot;: 2,
+  &quot;offsets&quot;: [[0, 0], [0, 0], [0, 0], [0, 0], [0.04, -0.02], [0, 0], [0, 0], [0, 0], [0, 0]]
+}
+</code></pre>
+<p><code>columns</code> and <code>rows</code> count <strong>cells</strong>, so the grid holds
+<code>(rows + 1) * (columns + 1)</code> points and <code>offsets</code> is that many <code>[dx, dy]</code> pairs,
+row-major from the top left. Both counts are clamped to 1-16 on load, and the
+offset list is padded or trimmed to match rather than failing the file.</p>
+<p>Each offset is a fraction of the <strong>object's own size</strong>, not of the canvas -
+unlike <code>transform.corner_offsets</code>, which are a fraction of the canvas. That is
+why a mesh keeps its shape when the object is resized, and why converting
+between the two needs to know how big the object is and which way it is turned.</p>
+<p>A one-cell mesh is exactly a corner pin. For a mesh object the transform's own
+<code>corner_offsets</code> are left at zero: the grid owns the warp, and applying both
+would warp the object twice.</p>
+<p>A build without mesh support skips a <code>mesh_image</code> layer on load, the same as
+any other unknown type - the rest of the scene opens normally.</p>
+<p>A <code>mesh_video</code> carries every <code>video</code> field unchanged (<code>path</code>, <code>fit</code>, <code>loop</code>,
+<code>autoplay</code>, <code>restart_on_live</code>, <code>muted</code>, <code>volume</code>, <code>rate</code>, <code>in_point</code>,
+<code>out_point</code>, <code>audio_device</code>) and adds:</p>
+<pre><code class="language-json">&quot;mesh&quot;: { &quot;columns&quot;: 2, &quot;rows&quot;: 2, &quot;offsets&quot;: [] },
+&quot;smooth&quot;: true
+</code></pre>
+<p>Converting between <code>video</code> and <code>mesh_video</code> keeps all of it, in both
+directions.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="../features.html">Features</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="../docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="../license.html">Licence</a></li>
+          <li><a href="../docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="../license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

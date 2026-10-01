@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building - SurfaceCast</title>
+<meta name="description" content="Producing the Windows executable and installer.">
+<meta property="og:title" content="Building - SurfaceCast">
+<meta property="og:description" content="Producing the Windows executable and installer.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="doc-layout">
+    <nav class="doc-nav"><h4>On this page</h4><ul class="doc-toc"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#what-the-script-does">What the script does</a></li><li><a href="#output">Output</a></li><li><a href="#options">Options</a></li><li><a href="#changing-the-version">Changing the version</a></li><li><a href="#running-the-steps-by-hand">Running the steps by hand</a></li><li><a href="#why-a-folder-build-not-a-single-file">Why a folder build, not a single file</a></li><li><a href="#the-build-is-unsigned">The build is unsigned</a></li><li><a href="#what-the-installer-does">What the installer does</a></li><li><a href="#notes-on-the-packaged-qt">Notes on the packaged Qt</a></li><li><a href="#where-settings-live">Where settings live</a></li><li><a href="#diagnostics">Diagnostics</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#the-website">The website</a></li></ul><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html" aria-current="page">Building</a></li><li><a href="scene-format.html">Scene file format</a></li><li><a href="settings-format.html">Settings format</a></li><li><a href="mesh-video.html">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
+    <div class="doc-body">
+      <h1 id="building-surfacecast-for-windows">Building SurfaceCast for Windows</h1>
+<p>One command takes a clean checkout to artifacts you can hand to someone.</p>
+<pre><code>build.bat
+</code></pre>
+<p>That is it. From PowerShell, or to pass options:</p>
+<pre><code class="language-powershell">powershell -ExecutionPolicy Bypass -File build\build.ps1
+</code></pre>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li>Windows 10 or later, 64-bit</li>
+<li>Python 3.10 or newer, on <code>PATH</code> (tick <em>"Add python.exe to PATH"</em> in the
+  Python installer)</li>
+<li><a href="https://jrsoftware.org/isdl.php">Inno Setup 6</a> for the installer — optional,
+  and <code>build.bat -InstallInnoSetup</code> will fetch it with winget</li>
+</ul>
+<p>Nothing else. The script creates its own virtual environment and installs
+everything into it, so your system Python is left alone.</p>
+<h2 id="what-the-script-does">What the script does</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Checks Python is present and new enough, and reads the version</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Creates <code>build\.venv</code> and installs the dependencies into it</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Runs the test suite — <strong>and refuses to package if it fails</strong></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Regenerates the application icon</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Builds the application with PyInstaller</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Launches the built <code>.exe</code> to confirm it actually starts</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Packages the portable zip</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Compiles the installer with Inno Setup</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Writes SHA-256 checksums and a build record</td>
+</tr>
+</tbody>
+</table>
+<p>Step 6 is worth calling out: a missing Qt plugin or DLL produces a bundle that
+builds perfectly and then dies the moment it is launched. The script starts the
+executable, waits ten seconds, and fails the build if it exited. A window may
+briefly appear; that is expected.</p>
+<h2 id="output">Output</h2>
+<p>Everything deployable lands in <code>dist\</code>:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SurfaceCast-0.1.0-setup.exe</code></td>
+<td>The installer — this is what you give people</td>
+</tr>
+<tr>
+<td><code>SurfaceCast-0.1.0-portable.zip</code></td>
+<td>No-install build; unzip and run <code>SurfaceCast.exe</code></td>
+</tr>
+<tr>
+<td><code>SHA256SUMS.txt</code></td>
+<td>Checksums, in the format <code>sha256sum -c</code> reads</td>
+</tr>
+<tr>
+<td><code>BUILD-INFO.txt</code></td>
+<td>Version, commit, machine, Python and PySide6 versions</td>
+</tr>
+</tbody>
+</table>
+<p>Intermediate output stays under <code>build\</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build\out\SurfaceCast\</code></td>
+<td>The unpacked application</td>
+</tr>
+<tr>
+<td><code>build\work\</code></td>
+<td>PyInstaller scratch space, safe to delete</td>
+</tr>
+<tr>
+<td><code>build\.venv\</code></td>
+<td>The build virtual environment</td>
+</tr>
+<tr>
+<td><code>build\_generated\</code></td>
+<td>Version files generated from <code>constants.py</code></td>
+</tr>
+</tbody>
+</table>
+<p>All of it is ignored by git.</p>
+<h2 id="options">Options</h2>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-SkipInstaller</code></td>
+<td>Application and portable zip only</td>
+</tr>
+<tr>
+<td><code>-SkipPortable</code></td>
+<td>Do not build the zip</td>
+</tr>
+<tr>
+<td><code>-SkipTests</code></td>
+<td>Package without running the tests (not for a release)</td>
+</tr>
+<tr>
+<td><code>-SkipSmokeTest</code></td>
+<td>Do not launch the result — use on a machine with no desktop</td>
+</tr>
+<tr>
+<td><code>-Clean</code></td>
+<td>Delete and rebuild the build virtual environment</td>
+</tr>
+<tr>
+<td><code>-InstallInnoSetup</code></td>
+<td>Install Inno Setup with winget if it is missing</td>
+</tr>
+<tr>
+<td><code>-OutputDir &lt;path&gt;</code></td>
+<td>Put the artifacts somewhere other than <code>dist\</code></td>
+</tr>
+</tbody>
+</table>
+<pre><code>build.bat -SkipInstaller
+build.bat -Clean -InstallInnoSetup
+build.bat -OutputDir C:\releases\surfacecast
+</code></pre>
+<p>The script exits non-zero if any step fails, so it drops straight into CI.</p>
+<h2 id="changing-the-version">Changing the version</h2>
+<p>Edit <code>APP_VERSION</code> in <code>surfacecast/core/constants.py</code>. That is the only place
+it is written down — the Windows version resource, the installer, the artifact
+filenames and the packaging metadata are all derived from it at build time, and
+a test fails if a second copy creeps back in.</p>
+<h2 id="running-the-steps-by-hand">Running the steps by hand</h2>
+<pre><code class="language-powershell">python -m pip install -r requirements-dev.txt
+python build\make_icon.py
+python -m PyInstaller build\surfacecast.spec --noconfirm --clean --workpath build\work --distpath build\out
+iscc build\installer.iss
+</code></pre>
+<p>Run PyInstaller before Inno Setup: the spec generates the version file that
+<code>installer.iss</code> reads.</p>
+<h2 id="why-a-folder-build-not-a-single-file">Why a folder build, not a single file</h2>
+<p>A one-file build unpacks itself into a temporary folder on every launch, which
+adds seconds to startup. That is the wrong trade for an application opened
+minutes before a show starts. The installer hides the folder from users anyway,
+and the portable zip is for people who want to see it.</p>
+<h2 id="the-build-is-unsigned">The build is unsigned</h2>
+<p>There is no code signing certificate involved, so on a machine that has not seen
+the installer before, Windows SmartScreen shows <em>"Windows protected your PC"</em>.
+Users get past it with <strong>More info &gt; Run anyway</strong>. Some managed environments
+block unsigned installers outright; there, the portable zip can be copied into
+place instead.</p>
+<p>To sign it later, add a <code>signtool</code> step after PyInstaller and before Inno Setup,
+and set <code>SignTool</code> in <code>build\installer.iss</code>.</p>
+<h2 id="what-the-installer-does">What the installer does</h2>
+<ul>
+<li>Installs per-machine when run elevated, per-user otherwise</li>
+<li>Start menu shortcut always; desktop shortcut optional</li>
+<li>Optionally registers a private <code>SurfaceCast.Scene</code> ProgID and adds SurfaceCast
+  to the <strong>Open with</strong> list for <code>.json</code> — it does not take <code>.json</code> away from
+  other applications</li>
+<li>Upgrades replace the previous install rather than stacking up entries in
+  Apps &amp; features</li>
+<li>Uninstalling removes the application and the settings in
+  <code>%APPDATA%\SurfaceCast</code>, and <strong>leaves your scenes and shows alone</strong></li>
+<li>Shows the GPL as a wizard page, and installs the documentation to
+  <code>{app}\docs</code> with a Start Menu shortcut to it. The application prefers that
+  copy, so <strong>Help &gt; Open the folder</strong> lands somewhere browsable rather than
+  inside the packed bundle</li>
+</ul>
+<h2 id="notes-on-the-packaged-qt">Notes on the packaged Qt</h2>
+<ul>
+<li>The spec excludes the Qt modules the application never touches (WebEngine,
+  Quick/QML, 3D, Charts, SQL and so on). Do not prune <code>QtMultimedia</code>,
+  <code>QtMultimediaWidgets</code> or <code>QtNetwork</code> — video playback needs all three.</li>
+<li>Video decoding uses Qt's bundled FFmpeg backend, so there is nothing to
+  install on the target machine.</li>
+<li>The application icon is generated by <code>build\make_icon.py</code> rather than checked
+  in as artwork; the build regenerates it every time.</li>
+</ul>
+<h2 id="where-settings-live">Where settings live</h2>
+<p><code>%APPDATA%\SurfaceCast\settings.json</code>. Deleting it resets the application to
+defaults, including the projector screen choice.</p>
+<p>The log is at <code>%APPDATA%\SurfaceCast\logs\surfacecast.log</code>, rotating at one
+megabyte with three older files kept. This is the first thing to ask for when a
+packaged build misbehaves: it is windowed, so stderr is discarded, and the log
+is the only record that survives.</p>
+<p>The autosave copy lives beside it as <code>%APPDATA%\SurfaceCast\recovery.json</code>. It
+exists only while there is unsaved work, is removed on a clean exit, and is an
+ordinary show file — safe to delete, and openable with <strong>File &gt; Open show</strong>.</p>
+<h2 id="diagnostics">Diagnostics</h2>
+<p>When something does not work on the real hardware, this prints everything
+needed to work out why - Python and Qt versions, every screen with its
+resolution, position and scaling, the audio outputs, and the settings file:</p>
+<pre><code>python tools\diagnose.py
+</code></pre>
+<p>Pass a video file and it also opens it with the same player the application
+uses, which separates "SurfaceCast cannot find the file" from "Qt cannot
+decode this file":</p>
+<pre><code>python tools\diagnose.py &quot;D:\media\loop.mp4&quot;
+</code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p><strong>"Python was not found on PATH."</strong> Install Python 3.10+ from python.org with
+<em>"Add python.exe to PATH"</em> ticked, then open a new terminal.</p>
+<p><strong><code>python.exe : File "&lt;string&gt;", line 1</code> at "Checking the environment".</strong>
+A <code>python -c</code> snippet in <code>build\build.ps1</code> contains a double quote. Windows
+PowerShell rebuilds a native command line as a string and does not escape
+quotes inside an argument, so <code>python -c 'print("x")'</code> arrives at Python as
+<code>print(x)</code> and dies with a syntax error naming neither the step nor the cause.
+Rewrite the snippet without any double quotes; <code>tests\test_packaging.py</code> fails
+the suite if one creeps back in.</p>
+<p><strong>The build stops at the test step.</strong> That is the gate doing its job. Run
+<code>build\.venv\Scripts\python -m pytest</code> to see the failure, fix it, or pass
+<code>-SkipTests</code> if you know why it fails.</p>
+<p><strong>"The packaged application exited immediately."</strong> The bundle is missing
+something. Check that none of <code>QtMultimedia</code>, <code>QtMultimediaWidgets</code> or
+<code>QtNetwork</code> ended up in the <code>excludes</code> list in <code>build\surfacecast.spec</code>, then
+run <code>build\out\SurfaceCast\SurfaceCast.exe</code> by hand to see the error.</p>
+<p><strong>"Inno Setup (ISCC.exe) was not found."</strong> Install it, re-run with
+<code>-InstallInnoSetup</code>, or pass <code>-SkipInstaller</code>. The application folder and the
+portable zip are already built by that point.</p>
+<p><strong>The smoke test opens a fullscreen projector window.</strong> A previous run saved
+"open the projector at startup" into your settings. It is killed after ten
+seconds, or use <code>-SkipSmokeTest</code>.</p>
+<p><strong>Video does not play in the packaged build but does from source.</strong> See the Qt
+note above — it is almost always an over-aggressive <code>excludes</code> entry.</p>
+<p><strong>The projector window opens on the wrong screen.</strong> Screen indices change when
+displays are plugged in or out. Pick the screen again in <strong>Output &gt; Projector
+screen</strong> and use <strong>Identify screens</strong> to confirm.</p>
+<h2 id="the-website">The website</h2>
+<p>Separate from the application build, and needs nothing from it:</p>
+<pre><code>pip install -r requirements-site.txt
+python tools/capture_screens.py
+python tools/build_site.py
+</code></pre>
+<p><code>tools/capture_screens.py</code> stands up the real control panel, loads
+<code>examples/demo-scene.json</code> (which references no external media, so the pictures
+come out the same anywhere), and grabs the widgets. The phone shots need
+Playwright; it starts a remote server on a free port and drives Chromium at
+phone size against it. Pass <code>--skip-phone</code> if Playwright is not installed.</p>
+<p><code>tools/build_site.py</code> writes <code>site/</code>. The documentation pages are generated
+from the markdown in the repository - the site never holds a second copy of
+any document. Brand colors are the block at the top of
+<code>website/assets/site.css</code>.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="../features.html">Features</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="../docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="../license.html">Licence</a></li>
+          <li><a href="../docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="../license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

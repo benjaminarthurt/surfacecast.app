@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings format - SurfaceCast</title>
+<meta name="description" content="What SurfaceCast keeps about this computer, including the light rig.">
+<meta property="og:title" content="Settings format - SurfaceCast">
+<meta property="og:description" content="What SurfaceCast keeps about this computer, including the light rig.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="doc-layout">
+    <nav class="doc-nav"><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html">Building</a></li><li><a href="scene-format.html">Scene file format</a></li><li><a href="settings-format.html" aria-current="page">Settings format</a></li><li><a href="mesh-video.html">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
+    <div class="doc-body">
+      <h1 id="settings-and-light-rig-format">Settings and light rig format</h1>
+<p>What SurfaceCast keeps about <em>this computer</em>, as opposed to what it keeps about
+a show. The show is in <a href="../docs/scene-format.html">scene and show files</a>; everything here
+stays behind when a show travels.</p>
+<p>Nothing in this file has to be edited by hand — every value has a control, and
+the <a href="../docs/reference.html">reference</a> says which. It is documented because a light rig
+is real work, and copying one to a second machine, or diffing two venues, is
+easier from the file than from a dialog.</p>
+<h2 id="where-it-lives">Where it lives</h2>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows</td>
+<td><code>%APPDATA%\SurfaceCast\settings.json</code></td>
+</tr>
+<tr>
+<td>Anything else</td>
+<td><code>~/.config/SurfaceCast/settings.json</code></td>
+</tr>
+</tbody>
+</table>
+<p>The log sits beside it in <code>logs\surfacecast.log</code>, and the crash-recovery copy
+beside that. <strong>Help ▸ Open log folder</strong> shows them.</p>
+<p>It is written to a temporary file and renamed into place, so an interrupted
+save cannot leave a truncated settings file behind. A file that cannot be read
+is replaced by defaults rather than failing the launch, and an individual value
+that cannot be read falls back to its default without disturbing the rest — so
+hand-editing can cost you one setting but not the whole file.</p>
+<h2 id="the-document">The document</h2>
+<pre><code class="language-json">{
+  &quot;projector_screen&quot;: -1,
+  &quot;auto_open_projector&quot;: false,
+  &quot;match_canvas_to_screen&quot;: true,
+  &quot;canvas_width&quot;: 1920,
+  &quot;canvas_height&quot;: 1080,
+  &quot;show_grid&quot;: true,
+  &quot;grid_divisions&quot;: 12,
+  &quot;snap_to_grid&quot;: false,
+  &quot;show_safe_area&quot;: false,
+  &quot;blackout&quot;: false,
+  &quot;master_volume&quot;: 1.0,
+  &quot;confirm_take&quot;: false,
+  &quot;autosave_enabled&quot;: true,
+  &quot;autosave_seconds&quot;: 60,
+  &quot;show_cue_controls&quot;: true,
+  &quot;remote_enabled&quot;: false,
+  &quot;remote_address&quot;: &quot;&quot;,
+  &quot;slot_count&quot;: 5,
+  &quot;remote_port&quot;: 50505,
+  &quot;remote_allow_edit&quot;: true,
+  &quot;remote_allow_upload&quot;: false,
+  &quot;lights_enabled&quot;: false,
+  &quot;lights_host&quot;: &quot;&quot;,
+  &quot;lights_port&quot;: 21324,
+  &quot;lights_rate_hz&quot;: 30,
+  &quot;lights_saturation&quot;: 1.0,
+  &quot;lights_dmx_protocol&quot;: &quot;&quot;,
+  &quot;lights_dmx_host&quot;: &quot;&quot;,
+  &quot;lights_dmx_port&quot;: &quot;&quot;,
+  &quot;lights_dmx_universe&quot;: 1,
+  &quot;lights_dmx_cid&quot;: &quot;&quot;,
+  &quot;lights_rig&quot;: {},
+  &quot;media_dir&quot;: &quot;&quot;,
+  &quot;last_scene_dir&quot;: &quot;&quot;,
+  &quot;last_media_dir&quot;: &quot;&quot;,
+  &quot;recent_shows&quot;: [],
+  &quot;window_geometry&quot;: &quot;&quot;,
+  &quot;window_state&quot;: &quot;&quot;
+}
+</code></pre>
+<h3 id="output-and-canvas">Output and canvas</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>projector_screen</code></td>
+<td><code>-1</code></td>
+<td>Index into the attached screens. <code>-1</code> means none chosen; the projector then defaults to the second screen if there is one.</td>
+</tr>
+<tr>
+<td><code>auto_open_projector</code></td>
+<td><code>false</code></td>
+<td>Open the output window at startup. Ignored while <code>projector_screen</code> is <code>-1</code>.</td>
+</tr>
+<tr>
+<td><code>match_canvas_to_screen</code></td>
+<td><code>true</code></td>
+<td>Follow the projector's native resolution.</td>
+</tr>
+<tr>
+<td><code>canvas_width</code> / <code>canvas_height</code></td>
+<td><code>1920</code> / <code>1080</code></td>
+<td>Used when the above is <code>false</code>. 320–16384.</td>
+</tr>
+<tr>
+<td><code>blackout</code></td>
+<td><code>false</code></td>
+<td>Remembered across launches, deliberately: a show that ended blacked out opens blacked out.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="console">Console</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>show_grid</code></td>
+<td><code>true</code></td>
+<td>Alignment grid on the preview. Never on the output.</td>
+</tr>
+<tr>
+<td><code>grid_divisions</code></td>
+<td><code>12</code></td>
+<td>2–64.</td>
+</tr>
+<tr>
+<td><code>snap_to_grid</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>show_safe_area</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>master_volume</code></td>
+<td><code>1.0</code></td>
+<td>0–1, multiplied by each video layer's own volume.</td>
+</tr>
+<tr>
+<td><code>confirm_take</code></td>
+<td><code>false</code></td>
+<td>Ask before a click puts a scene live.</td>
+</tr>
+<tr>
+<td><code>show_cue_controls</code></td>
+<td><code>true</code></td>
+<td>The per-slot cue settings under the scene strip.</td>
+</tr>
+<tr>
+<td><code>slot_count</code></td>
+<td><code>5</code></td>
+<td>How many scene slots to open with. 1–20.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="files-and-recovery">Files and recovery</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>autosave_enabled</code></td>
+<td><code>true</code></td>
+<td>Keep a recovery copy while anything is unsaved.</td>
+</tr>
+<tr>
+<td><code>autosave_seconds</code></td>
+<td><code>60</code></td>
+<td>15–900.</td>
+</tr>
+<tr>
+<td><code>media_dir</code></td>
+<td><code>""</code></td>
+<td>The media folder. Empty means the default — <code>media/</code> in a checkout, or the config folder in a built copy, which has nowhere writable of its own.</td>
+</tr>
+<tr>
+<td><code>last_scene_dir</code> / <code>last_media_dir</code></td>
+<td><code>""</code></td>
+<td>Where the file dialogs open.</td>
+</tr>
+<tr>
+<td><code>recent_shows</code></td>
+<td><code>[]</code></td>
+<td>Up to ten paths, most recent first.</td>
+</tr>
+<tr>
+<td><code>window_geometry</code> / <code>window_state</code></td>
+<td><code>""</code></td>
+<td>Base64 Qt window and dock layout. Delete both to reset the layout; <code>Shift+F5</code> does the same from inside.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="remote-control">Remote control</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>remote_enabled</code></td>
+<td><code>false</code></td>
+<td><strong>It has no password.</strong></td>
+</tr>
+<tr>
+<td><code>remote_address</code></td>
+<td><code>""</code></td>
+<td>The one adapter to bind to. Empty means none chosen, and the remote will not start.</td>
+</tr>
+<tr>
+<td><code>remote_port</code></td>
+<td><code>50505</code></td>
+<td>1024–65535.</td>
+</tr>
+<tr>
+<td><code>remote_allow_edit</code></td>
+<td><code>true</code></td>
+<td>Whether the phone may edit scenes as well as run the show.</td>
+</tr>
+<tr>
+<td><code>remote_allow_upload</code></td>
+<td><code>false</code></td>
+<td>Whether the phone may write files into the media folder. Separate from editing, and off by default: everything else the remote does stays inside the show.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lights">Lights</h3>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lights_enabled</code></td>
+<td><code>false</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>lights_host</code></td>
+<td><code>""</code></td>
+<td>The WLED controller's address.</td>
+</tr>
+<tr>
+<td><code>lights_port</code></td>
+<td><code>21324</code></td>
+<td>WLED's realtime port.</td>
+</tr>
+<tr>
+<td><code>lights_rate_hz</code></td>
+<td><code>30</code></td>
+<td>10–60.</td>
+</tr>
+<tr>
+<td><code>lights_saturation</code></td>
+<td><code>1.0</code></td>
+<td>0–2. How far sampled colors are pushed from gray on the way out.</td>
+</tr>
+<tr>
+<td><code>lights_dmx_protocol</code></td>
+<td><code>""</code></td>
+<td><code>""</code>, <code>"artnet"</code>, <code>"sacn"</code> or <code>"usb"</code>.</td>
+</tr>
+<tr>
+<td><code>lights_dmx_host</code></td>
+<td><code>""</code></td>
+<td>Art-Net: the node, required. sACN: empty multicasts. Unused for <code>usb</code>.</td>
+</tr>
+<tr>
+<td><code>lights_dmx_port</code></td>
+<td><code>""</code></td>
+<td>The serial port, for <code>usb</code> only.</td>
+</tr>
+<tr>
+<td><code>lights_dmx_universe</code></td>
+<td><code>1</code></td>
+<td>Which universe a USB widget carries.</td>
+</tr>
+<tr>
+<td><code>lights_dmx_cid</code></td>
+<td><code>""</code></td>
+<td>This installation's sACN source identifier, generated once. Receivers tell sources apart by it, so a fresh one each launch would look like a new console appearing. Leave it alone.</td>
+</tr>
+<tr>
+<td><code>lights_rig</code></td>
+<td><code>{}</code></td>
+<td>The rig. See below.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-light-rig">The light rig</h2>
+<pre><code class="language-json">&quot;lights_rig&quot;: {
+  &quot;zones&quot;: [
+    {
+      &quot;name&quot;: &quot;1,1&quot;,
+      &quot;x&quot;: 0.0, &quot;y&quot;: 0.0, &quot;width&quot;: 0.25, &quot;height&quot;: 1.0,
+      &quot;start&quot;: 0, &quot;count&quot;: 4, &quot;gain&quot;: 1.0
+    },
+    {
+      &quot;name&quot;: &quot;house left pars&quot;,
+      &quot;x&quot;: 0.25, &quot;y&quot;: 0.0, &quot;width&quot;: 0.25, &quot;height&quot;: 1.0,
+      &quot;start&quot;: 0, &quot;count&quot;: 2, &quot;gain&quot;: 0.8,
+      &quot;target&quot;: &quot;dmx&quot;, &quot;universe&quot;: 3, &quot;channel&quot;: 9,
+      &quot;profile&quot;: &quot;Dimmer + RGB (4 channels)&quot;
+    }
+  ],
+  &quot;fixtures&quot;: [
+    {
+      &quot;name&quot;: &quot;Cheap mover&quot;,
+      &quot;channels&quot;: [
+        {&quot;role&quot;: &quot;fixed&quot;,  &quot;value&quot;: 128},
+        {&quot;role&quot;: &quot;fixed&quot;,  &quot;value&quot;: 64},
+        {&quot;role&quot;: &quot;dimmer&quot;, &quot;value&quot;: 255},
+        {&quot;role&quot;: &quot;red&quot;,    &quot;value&quot;: 0},
+        {&quot;role&quot;: &quot;green&quot;,  &quot;value&quot;: 0},
+        {&quot;role&quot;: &quot;blue&quot;,   &quot;value&quot;: 0},
+        {&quot;role&quot;: &quot;fixed&quot;,  &quot;value&quot;: 0}
+      ]
+    }
+  ]
+}
+</code></pre>
+<h3 id="zones">Zones</h3>
+<p>A zone is a rectangle of the canvas tied to a run of lamps. Coordinates are a
+<strong>share of the canvas</strong>, 0 to 1, exactly as object placement is, so a rig
+survives a change of projector resolution.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>""</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>x</code>, <code>y</code></td>
+<td><code>0.0</code></td>
+<td>Top-left corner, 0–1.</td>
+</tr>
+<tr>
+<td><code>width</code>, <code>height</code></td>
+<td><code>1.0</code></td>
+<td>0.001–1, clamped to stay inside the canvas.</td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td><code>1</code></td>
+<td>How many things take this color — LEDs on a strip, fixtures in a row on DMX. 1–4096.</td>
+</tr>
+<tr>
+<td><code>gain</code></td>
+<td><code>1.0</code></td>
+<td>0–4, applied to this zone alone.</td>
+</tr>
+<tr>
+<td><code>spread</code></td>
+<td><code>"flat"</code></td>
+<td>Which way the run travels across the rectangle: <code>"flat"</code>, <code>"right"</code>, <code>"left"</code>, <code>"down"</code> or <code>"up"</code>. <strong>Only written when it is not <code>"flat"</code></strong>, so a rig saved before this field existed is written back unchanged. A value this does not recognise reads as <code>"flat"</code>.</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td><code>"wled"</code></td>
+<td><code>"wled"</code> or <code>"dmx"</code>. <strong>Only written when it is <code>"dmx"</code></strong>, so a WLED-only rig keeps the file it had before DMX existed.</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td><code>0</code></td>
+<td>WLED only: the first LED, counting from <strong>0</strong>. The dialog shows it counting from 1.</td>
+</tr>
+<tr>
+<td><code>universe</code></td>
+<td><code>1</code></td>
+<td>DMX only. 1–63999.</td>
+</tr>
+<tr>
+<td><code>channel</code></td>
+<td><code>1</code></td>
+<td>DMX only: the fixture's first channel, counting from <strong>1</strong>. 1–512.</td>
+</tr>
+<tr>
+<td><code>profile</code></td>
+<td><code>"RGB (3 channels)"</code></td>
+<td>DMX only: which fixture profile lays the color out, by name. A name that no longer exists falls back to plain RGB — lit wrongly rather than silently stopped.</td>
+</tr>
+</tbody>
+</table>
+<p>A rig drives at most <strong>4096</strong> LEDs. Gaps between zones are sent black rather
+than repeating the last zone.</p>
+<h3 id="fixtures">Fixtures</h3>
+<p>Profiles beyond the two built in. <strong>Omitted entirely when there are none.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>What zones refer to it by. Renaming it in the dialog takes its zones along; renaming it here does not.</td>
+</tr>
+<tr>
+<td><code>channels</code></td>
+<td>One entry per DMX channel, <strong>in order</strong>.</td>
+</tr>
+</tbody>
+</table>
+<p>Each channel has a <code>role</code> and a <code>value</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>red</code>, <code>green</code>, <code>blue</code></td>
+<td>Driven by the picture. <code>value</code> is ignored.</td>
+</tr>
+<tr>
+<td><code>dimmer</code></td>
+<td>Held at <code>value</code>. Named separately from <code>fixed</code> only so the dialog can label it.</td>
+</tr>
+<tr>
+<td><code>fixed</code></td>
+<td>Held at <code>value</code>. Park a gobo wheel, a pan, a tilt, a strobe.</td>
+</tr>
+</tbody>
+</table>
+<p>Anything else reads as <code>fixed</code>. An unreadable entry becomes a held zero rather
+than disappearing — channels are positional, and dropping one would pull every
+channel after it down by one and misaddress the whole fixture.</p>
+<p>The two built-in profiles are not stored here. They are
+<code>RGB (3 channels)</code> — red, green, blue — and
+<code>Dimmer + RGB (4 channels)</code> — a dimmer held at 255, then red, green, blue.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="../features.html">Features</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="../docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="../license.html">Licence</a></li>
+          <li><a href="../docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="../license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>

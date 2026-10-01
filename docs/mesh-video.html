@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mesh video performance - SurfaceCast</title>
+<meta name="description" content="What warping video costs, measured rather than guessed.">
+<meta property="og:title" content="Mesh video performance - SurfaceCast">
+<meta property="og:description" content="What warping video costs, measured rather than guessed.">
+<meta property="og:type" content="website">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
+    <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="doc-layout">
+    <nav class="doc-nav"><h4>On this page</h4><ul class="doc-toc"><li><a href="#what-was-measured">What was measured</a></li><li><a href="#the-numbers-1080p-into-1920x1080-smoothing-on">The numbers, 1080p into 1920x1080, smoothing on</a></li><li><a href="#what-it-says">What it says</a></li><li><a href="#two-things-that-turned-out-not-to-be-true">Two things that turned out not to be true</a></li><li><a href="#recommendation">Recommendation</a></li><li><a href="#what-building-it-actually-found">What building it actually found</a></li></ul><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html">Building</a></li><li><a href="scene-format.html">Scene file format</a></li><li><a href="settings-format.html">Settings format</a></li><li><a href="mesh-video.html" aria-current="page">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
+    <div class="doc-body">
+      <h1 id="mesh-video-the-phase-2-spike">Mesh video: the Phase 2 spike</h1>
+<p>Phase 1 gave images a warp grid. Video could not follow, because a
+<code>QGraphicsVideoItem</code> cannot be cut into cells — doing it means taking frames
+through a <code>QVideoSink</code> and painting them ourselves.</p>
+<p>This is the measurement that decides whether that is worth building, and the
+tool that produced it: <code>tools/mesh_video_spike.py</code>. <strong>Run it on the machine
+that will drive the projector</strong> — decode is where hardware differs most.</p>
+<pre><code>python tools/mesh_video_spike.py --video yourclip.mp4
+python tools/mesh_video_spike.py --video yourclip.mp4 --size 3840x2160
+python tools/mesh_video_spike.py --video yourclip.mp4 --fast   # smoothing off
+</code></pre>
+<h2 id="what-was-measured">What was measured</h2>
+<p>A 1080p30 and a 2160p30 H.264 clip, decoded through <code>QVideoSink</code> and drawn as
+an N x N warped grid into a full-size buffer. Three routes were timed per
+frame, plus decode on its own, plus the path that ships today as a baseline.</p>
+<p>The machine: 4-core Xeon at 2.1 GHz, software decode, <strong>no RHI backend</strong> (Qt
+reported "Using CPU conversion"). A Windows show laptop with a GPU should do
+better on conversion and probably on the warp too. Treat these as a floor.</p>
+<h2 id="the-numbers-1080p-into-1920x1080-smoothing-on">The numbers, 1080p into 1920x1080, smoothing on</h2>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>1x1</th>
+<th>4x4</th>
+<th>16x16</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>toImage()</code> then draw</td>
+<td>17.4 ms</td>
+<td>20.6 ms</td>
+<td>31.8 ms</td>
+</tr>
+<tr>
+<td><code>QVideoFrame.paint()</code> straight</td>
+<td><strong>12.0 ms</strong></td>
+<td><strong>15.6 ms</strong></td>
+<td><strong>27.4 ms</strong></td>
+</tr>
+<tr>
+<td>Budget at 60 fps</td>
+<td>16.7 ms</td>
+<td>16.7 ms</td>
+<td>16.7 ms</td>
+</tr>
+<tr>
+<td>Budget at 30 fps</td>
+<td>33.3 ms</td>
+<td>33.3 ms</td>
+<td>33.3 ms</td>
+</tr>
+</tbody>
+</table>
+<p>Baseline, the path that ships today, same clip full-canvas:</p>
+<table>
+<thead>
+<tr>
+<th>What</th>
+<th>Per rendered frame</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plain playback, no warp</td>
+<td>1.3 ms</td>
+</tr>
+<tr>
+<td>Corner pinned (keystone)</td>
+<td>5.5 ms</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-it-says">What it says</h2>
+<p><strong>It is viable at 1080p.</strong> One mesh video layer fits inside a 30 fps budget at
+every subdivision, and inside 60 fps up to about 4x4.</p>
+<p><strong>Subdivision is not the expense.</strong> Going from one cell to 16x16 barely more
+than doubles the cost. The expense is resampling a 1080p frame projectively at
+all: a single warped cell already costs 12 ms, where the same frame unwarped
+costs 1.3 ms. A fine grid is nearly free once you are paying for the warp.</p>
+<p><strong><code>QVideoFrame.paint()</code> is the route.</strong> It converts internally and saves the
+whole 5.1 ms <code>toImage()</code> step for no cost in draw time. Anything built here
+should use it rather than converting by hand.</p>
+<p><strong>Smoothing is the biggest lever.</strong> Turning it off cuts the draw roughly in
+half — 16x16 drops from 26 ms to 11 ms. That is a quality decision rather than
+a free win: nearest-neighbour sampling on a warped projection aliases visibly
+on detailed content. Worth exposing per object, not worth defaulting to.</p>
+<p><strong>It costs about twice what a keystone costs today</strong> — 12 ms against 5.5 ms.
+That is the honest price of the feature, and it buys surfaces a corner pin
+cannot fit at all.</p>
+<p><strong>4K does not fit.</strong> 60 ms a frame at one cell, 100 ms at 16x16, or 10-17 fps.
+Not on this machine, and probably not on any CPU raster path. 4K mesh video
+needs the GPU, which is a different piece of work.</p>
+<h2 id="two-things-that-turned-out-not-to-be-true">Two things that turned out not to be true</h2>
+<p>Both were expected to matter, and neither did. Recorded because the next person
+to look at this will have the same two ideas.</p>
+<p><strong>Giving each cell only its own slice of the frame made no difference</strong> —
+11.82 ms against 11.86 ms. The theory was that clipping still hands the whole
+frame to the transform, so N cells transform it N times. Qt's clip evidently
+already avoids that work. It also means the Phase 1 image renderer, which
+draws the whole buffer per cell and clips, is not leaving anything on the
+table.</p>
+<p><strong>Wrapping the frame's own bits without converting is not available.</strong> Frames
+arrive as <code>Format_YUV420P</code>, which no <code>QImage</code> format can wrap. The measurement
+that suggested it cost 0.05 ms was wrapping YUV bytes in an RGB image and
+producing garbage quickly. The tool now checks the format and reports "n/a"
+rather than a number that means nothing.</p>
+<h2 id="recommendation">Recommendation</h2>
+<p>Build it, for 1080p, using <code>QVideoFrame.paint()</code>, with smoothing exposed per
+object — but run the tool on the show laptop first. The number that decides it
+is the one from the machine that has to hold it for two hours, not this one.</p>
+<h2 id="what-building-it-actually-found">What building it actually found</h2>
+<p>Phase 3 shipped on this basis. Three things the spike did not catch, recorded
+so the numbers above are read with them in mind.</p>
+<p><strong>The frame has to be held, not read back.</strong> <code>QVideoSink.videoFrame()</code> is only
+dependable while <code>videoFrameChanged</code> is being delivered; a moment later the
+backend may have recycled the buffer, and painting from it draws nothing.
+<code>MeshVideoLayerItem</code> keeps a reference to the frame it was handed. That is also
+why it lets go of it on unload — an off-air scene must not pin a full-size
+buffer.</p>
+<p><strong><code>QVideoFrame.paint()</code> does honour the painter's clip and transform.</strong> It was
+briefly believed not to, on the strength of a render that looked like the warp
+had come apart. It had not: the test clip was ffmpeg's <code>testsrc2</code>, which
+contains a magenta bar, and the magenta background being used to find gaps was
+indistinguishable from it. Twice. Solid-color clips, or the two-background
+coverage trick in <code>tests/test_mesh_video.py</code>, avoid the trap.</p>
+<p><strong>Composing into a buffer first costs about 6.5 ms a frame</strong> at 1080p, measured
+through the real layer rather than the spike's harness. So the shipped renderer
+draws each cell straight from the frame, and only composes when it must: an
+aiming grid has to be warped <em>with</em> the picture to be any use, and a vignette
+applied after the warp would be the wrong shape. Both pay the 6.5 ms, and
+neither is on during a show.</p>
+<p>Through the real layer the per-cell route measures 12.2 ms at one cell, 15.2 at
+4x4 and 21.5 at 8x8 — close to the spike. 16x16 comes out at 45.8 ms rather
+than 27.4, because the spike drew into a bare canvas with no scene graph around
+it. <strong>Keep 1080p mesh video at 8x8 or below on hardware like this.</strong></p>
+    </div>
+  </div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>SurfaceCast</h4>
+        <ul>
+          <li><a href="../features.html">Features</a></li>
+          <li><a href="../download.html">Download</a></li>
+          <li><a href="../docs/index.html">Documentation</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Project</h4>
+        <ul>
+          <li><a href="../license.html">Licence</a></li>
+          <li><a href="../docs/notices.html">Third-party notices</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Dispatch Dataworks</h4>
+        <ul>
+          <li><a href="https://dispatchdataworks.com">dispatchdataworks.com</a></li>
+          <li><a href="mailto:help@surfacecast.app">help@surfacecast.app</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <a href="../license.html">GNU General Public License v3 or later</a>.
+      It comes with absolutely no warranty.</p>
+      <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
+    </div>
+  </div>
+</footer>
+<script src="../assets/site.js" defer></script>
+</body>
+</html>
