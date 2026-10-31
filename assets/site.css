@@ -91,6 +91,22 @@ section > .wrap > p { color: var(--brand-muted); max-width: 46em; }
 .card h3 { margin: 0 0 8px; font-size: 18px; }
 .card p { margin: 0; color: var(--brand-muted); font-size: 15.5px; }
 
+/* A section set apart from the ones either side of it, for the Halloween
+   story on the home page and the closing note on the story page itself. */
+.band { background: var(--brand-surface); }
+.band .eyebrow { margin-bottom: 10px; }
+
+/* The demo footage. One clip and a few photographs of a real show, so they
+   are given the width to be looked at rather than scaled into a card. */
+.demo-video { margin: 34px 0 0; border: 1px solid var(--brand-line);
+  border-radius: var(--radius); overflow: hidden; background: #000; }
+.demo-video video { display: block; width: 100%; height: auto; }
+.demo-video figcaption, .demo-stills figcaption { padding: 10px 14px;
+  font-size: 13.5px; color: var(--brand-muted); background: var(--brand-surface); }
+.demo-stills figure { margin: 0; border: 1px solid var(--brand-line);
+  border-radius: var(--radius); overflow: hidden; }
+.demo-stills img { display: block; width: 100%; height: auto; }
+
 .feature { display: grid; gap: 34px; align-items: center; margin-top: 44px;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 .feature figure { margin: 0; border: 1px solid var(--brand-line); border-radius: var(--radius); overflow: hidden; }

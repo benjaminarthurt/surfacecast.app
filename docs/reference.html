@@ -16,7 +16,7 @@
   <div class="wrap">
     <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
     <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
-    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../halloween.html">Halloween</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
   </div>
 </header>
 
@@ -654,7 +654,7 @@ type; the rest depend on what it is.</p>
 <tr>
 <td>Mute this layer</td>
 <td></td>
-<td></td>
+<td>Silences this clip alone, whether or not it is visible.</td>
 </tr>
 <tr>
 <td>Volume</td>
@@ -668,6 +668,12 @@ type; the rest depend on what it is.</p>
 </tr>
 </tbody>
 </table>
+<p>A <strong>hidden layer is silent</strong>, so hiding a video takes its sound out of the
+show along with its picture — from the layer list, the properties panel or the
+phone, and at once rather than at the next take. The clip keeps playing, so
+showing it again brings the sound back where the show is rather than restarting
+it. <strong>Mute this layer</strong> is the separate switch for silencing a clip you still
+want on screen, and hiding a muted layer and showing it again leaves it muted.</p>
 <h3 id="image">Image</h3>
 <table>
 <thead>
@@ -1027,7 +1033,7 @@ height and each page scrolls, so the OK and Cancel buttons are always reachable.
 <tr>
 <td>Allow uploading media from the remote</td>
 <td></td>
-<td><strong>Off by default</strong>, and separate from editing: everything else the remote does stays inside the show, while this writes files onto this machine.</td>
+<td><strong>Off by default</strong>, and separate from editing: everything else the remote does stays inside the show, while this writes files onto this machine. Editing on its own is enough to <em>list</em> the folder and assign from it — reading names is not writing files.</td>
 </tr>
 </tbody>
 </table>
@@ -1063,6 +1069,16 @@ page is what stays the same whatever the rig looks like.</p>
 <td>Refresh</td>
 <td>10–60 per second</td>
 <td>How often the lights are updated. 30 is smooth and costs about a hundredth of a core.</td>
+</tr>
+<tr>
+<td>White balance</td>
+<td>R, G, B each 0–100 %</td>
+<td>Trims each channel on its own, so this rig's white is actually white. Green LEDs are usually the brightest of the three, so an untrimmed strip shows white with a green cast: send it a white picture and pull the two brightest channels down until the three match by eye. Applied last. <strong>This one is meant to change the color, white included</strong> — that is what it is for, and why it is last. Each channel only goes down; a strip cannot emit light it has not got.</td>
+</tr>
+<tr>
+<td>Brightness</td>
+<td>0–100 %</td>
+<td>The whole rig's level, applied last of all — a grand master. At 50% every lamp emits half the light it would have. It only takes light away, so it never changes a color and never has to clip. To make a lamp <em>brighter</em> use a zone's Gain or the scene's Intensity; a master above 100% would be a third place to look when a lamp is bright for no reason, and could do nothing once a channel is at full.</td>
 </tr>
 <tr>
 <td>Saturation</td>
@@ -1428,10 +1444,71 @@ see <a href="#remote">Settings ▸ Remote</a>.</p>
 </tbody>
 </table>
 <p>In edit mode: undo and redo, the scene's <strong>Active for</strong> time and <strong>Transition</strong>,
-an arrow pad with move / size / rotate / keystone modes, corner buttons for the
-keystone, and the common object properties.</p>
-<p>The <strong>Media</strong> page lists what is in the media folder. <strong>Add photos or video</strong>
-appears only when uploading is allowed in settings; it is off by default.</p>
+<strong>This scene</strong> (below), an arrow pad with move / size / rotate / keystone
+modes, corner buttons for the keystone, and the common object properties.</p>
+<h3 id="adding-and-deleting-in-edit-mode">Adding and deleting, in edit mode</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Add an object</strong></td>
+<td>Gradient, mask, image or video — the same four the console offers, less the mesh-warped kinds, since nothing on a phone can warp a mesh. The new object goes on top of the stack and becomes the selected one. A media object arrives empty; use <strong>Choose media</strong> in its properties to fill it.</td>
+</tr>
+<tr>
+<td><strong>Delete this object</strong></td>
+<td>Removes the selected object, after asking on the phone. Shows as <em>Locked</em> and does nothing on a locked object. The delete is recorded on the scene's history, so <strong>Undo</strong> takes it back.</td>
+</tr>
+</tbody>
+</table>
+<p>A scene that already holds its maximum of 32 objects refuses politely on the
+message line — the console puts up a modal warning here, which from a phone
+would block the desk.</p>
+<h3 id="this-scene-in-edit-mode">This scene, in edit mode</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Slot numbers</td>
+<td>Copies the open scene into that slot, named "… copy". A slot that already holds a scene is marked in amber, and tapping it asks on the phone before replacing — never on the console, because a dialog there would block the desk until somebody walked over to it.</td>
+</tr>
+<tr>
+<td><strong>Empty this scene</strong></td>
+<td>Clears the open slot, after asking on the phone. Unavailable while that slot is live: clearing what the audience is looking at, from another room, with no undo for it, is not something to do by accident.</td>
+</tr>
+</tbody>
+</table>
+<p>Both answer on the phone's message line when they refuse — the slot was empty,
+the slot was the same one, the slot is live — rather than failing silently.</p>
+<p>The <strong>Media</strong> page lists what is in the media folder. It is listed when
+<em>either</em> editing or uploading is allowed from the remote — listing only reads
+names, while <strong>Add photos or video</strong> writes files onto this machine and so
+appears only when uploading is allowed, which is off by default. With neither
+permission the folder is not listed and its path is not shown.</p>
+<p>An object that takes a media file — image, video, and the mesh-warped kinds —
+gets <strong>Change media</strong> in its properties. That opens the folder in picking mode:
+tap a file and the object shows it. Only files in the media folder, never a
+path typed in from elsewhere; the console can browse the whole disk, the remote
+is given the one place the operator put the show's media. A name that is not a
+plain file in that folder is refused before it reaches the show.</p>
+<p>While picking, <strong>Add photos or video</strong> finishes the job it was opened for: one
+file that uploads cleanly goes straight onto the object, so a photo taken in
+the room reaches the projector in two taps. Upload several, or have any of them
+refused, and nothing is assigned — the list stays up to be read and picked
+from, because guessing which one was meant would put the wrong picture on the
+projector with nobody having chosen it. The file assigned is always the name
+the console stored, not the name the phone sent: an upload never overwrites, so
+sending a second <code>clip.mp4</code> stores <code>clip-2.mp4</code>, and assigning the sent name
+would point the object at the older file.</p>
 <p>Phone edits go on the same undo stack as the console's, so either end can take
 back what the other did.</p>
     </div>

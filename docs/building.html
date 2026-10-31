@@ -16,7 +16,7 @@
   <div class="wrap">
     <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
     <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
-    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../halloween.html">Halloween</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
   </div>
 </header>
 
@@ -275,6 +275,16 @@ quotes inside an argument, so <code>python -c 'print("x")'</code> arrives at Pyt
 <code>print(x)</code> and dies with a syntax error naming neither the step nor the cause.
 Rewrite the snippet without any double quotes; <code>tests\test_packaging.py</code> fails
 the suite if one creeps back in.</p>
+<p><strong>"Upgrading pip failed (exit code 103)", with <code>did not find executable at
+'C:\Program Files\PythonNNN\python.exe'</code>.</strong> Nothing is wrong with pip. The
+build keeps its own virtual environment at <code>build\.venv</code>, and a virtual
+environment records an absolute path to the Python it was built from — upgrade
+or remove that Python and the venv's <code>python.exe</code> is still on disk but can no
+longer start. The build now notices this and rebuilds the venv itself, with a
+warning saying so; on an older build script, or if the rebuild fails too, run
+<code>build.bat -Clean</code>. Nothing is lost either way: everything in that venv comes
+from <code>requirements-dev.txt</code>. Note that it is <em>not</em> the <code>.venv</code> you activate to
+work on SurfaceCast — the two are separate, and the one you activate is fine.</p>
 <p><strong>The build stops at the test step.</strong> That is the gate doing its job. Run
 <code>build\.venv\Scripts\python -m pytest</code> to see the failure, fix it, or pass
 <code>-SkipTests</code> if you know why it fails.</p>

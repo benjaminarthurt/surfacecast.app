@@ -16,7 +16,7 @@
   <div class="wrap">
     <a class="wordmark" href="../index.html">Surface<span>Cast</span></a>
     <button class="nav-toggle" aria-expanded="false" hidden>Menu</button>
-    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
+    <nav class="site-nav"><a href="../index.html">Overview</a><a href="../halloween.html">Halloween</a><a href="../who-its-for.html">Who it&#x27;s for</a><a href="../features.html">Features</a><a href="../download.html">Download</a><a href="../docs/index.html" aria-current="page">Documentation</a><a href="../license.html">Licence</a></nav>
   </div>
 </header>
 
@@ -86,6 +86,10 @@ hand-editing can cost you one setting but not the whole file.</p>
   &quot;lights_port&quot;: 21324,
   &quot;lights_rate_hz&quot;: 30,
   &quot;lights_saturation&quot;: 1.0,
+  &quot;lights_brightness&quot;: 1.0,
+  &quot;lights_white_red&quot;: 1.0,
+  &quot;lights_white_green&quot;: 1.0,
+  &quot;lights_white_blue&quot;: 1.0,
   &quot;lights_dmx_protocol&quot;: &quot;&quot;,
   &quot;lights_dmx_host&quot;: &quot;&quot;,
   &quot;lights_dmx_port&quot;: &quot;&quot;,
@@ -302,6 +306,16 @@ hand-editing can cost you one setting but not the whole file.</p>
 <td><code>lights_saturation</code></td>
 <td><code>1.0</code></td>
 <td>0–2. How far sampled colors are pushed from gray on the way out.</td>
+</tr>
+<tr>
+<td><code>lights_brightness</code></td>
+<td><code>1.0</code></td>
+<td>0–1. The whole rig's level, applied after everything else. Attenuates only.</td>
+</tr>
+<tr>
+<td><code>lights_white_red</code>, <code>lights_white_green</code>, <code>lights_white_blue</code></td>
+<td><code>1.0</code></td>
+<td>0–1 each. Per-channel trim so the rig's white is white. Attenuates only, and applied last of all.</td>
 </tr>
 <tr>
 <td><code>lights_dmx_protocol</code></td>
