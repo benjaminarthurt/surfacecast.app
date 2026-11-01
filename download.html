@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Download SurfaceCast</title>
-<meta name="description" content="SurfaceCast for Windows: what the first build will be, and how to hear when it lands.">
+<meta name="description" content="SurfaceCast for Windows 10 and 11: installer, portable zip, checksums and the source for each build.">
 <meta property="og:title" content="Download SurfaceCast">
-<meta property="og:description" content="SurfaceCast for Windows: what the first build will be, and how to hear when it lands.">
+<meta property="og:description" content="SurfaceCast for Windows 10 and 11: installer, portable zip, checksums and the source for each build.">
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/site.css">
@@ -22,23 +22,52 @@
 
 <div class="hero">
   <div class="wrap">
-    <p class="eyebrow">Not released yet</p>
+    <p class="eyebrow">Windows 10 or 11, 64-bit</p>
     <h1>Download SurfaceCast</h1>
-    <p class="lede">There is no public build yet. When there is, it will be Windows 10
-    or 11, 64-bit, with nothing else to install - the Python runtime and the video
-    decoder go inside the build.</p>
+    <p class="lede">An installer and a portable zip, with nothing else to install -
+    the Python runtime and the video decoder go inside the build.</p>
+    <p class="lede-sub">Every release carries a <code>SHA256SUMS.txt</code> to check
+    the downloads against, and the complete source for that exact version.</p>
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://github.com/benjaminarthurt/surfacecast.app/releases/latest">Get the latest release</a>
+      <a class="btn" href="docs/user-guide.html">Read the guide first</a>
+    </div>
   </div>
 </div>
 
 <section>
   <div class="wrap">
     <div class="note">
-      <p><strong>The first build is not out.</strong> When it is, it will be an
-      installer and a portable zip, from this site, with a <code>SHA256SUMS.txt</code>
-      to check them against. Write to
-      <a href="mailto:help@surfacecast.app">help@surfacecast.app</a> and you will be told when -
-      the program has no update checker and never contacts us, so it cannot tell you
-      itself.</p>
+      <p><strong>Windows will warn you about this download, and it is right to.</strong>
+      The build is not signed with a code signing certificate, so SmartScreen shows
+      <em>"Windows protected your PC"</em>. Choose <strong>More info</strong> and then
+      <strong>Run anyway</strong>, or check the download against
+      <code>SHA256SUMS.txt</code> first - that tells you the file is the one that was
+      published, which is the thing a signature would be telling you. Some managed
+      machines refuse unsigned installers outright; the portable zip can be copied
+      into place without an installer at all.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What is in a release</h2>
+    <div class="grid grid-2">
+      <div class="card"><h3>Installer</h3>
+      <p><code>SurfaceCast-&lt;version&gt;-setup.exe</code>. Start menu entry, file
+      associations for scenes and shows, and an uninstaller.</p></div>
+      <div class="card"><h3>Portable zip</h3>
+      <p><code>SurfaceCast-&lt;version&gt;-portable.zip</code>. Unpack and run - nothing
+      is written outside the folder except the settings file. For a machine you cannot
+      install on.</p></div>
+      <div class="card"><h3>Source</h3>
+      <p><code>SurfaceCast-&lt;version&gt;-source.zip</code>. The complete corresponding
+      source for that build, which the licence entitles you to and which is published
+      beside it rather than on request.</p></div>
+      <div class="card"><h3>Checksums</h3>
+      <p><code>SHA256SUMS.txt</code>. Run
+      <code>Get-FileHash &lt;file&gt; -Algorithm SHA256</code> in PowerShell and compare.</p></div>
     </div>
   </div>
 </section>
@@ -69,17 +98,18 @@
         <p>The page on <a href="who-its-for.html">who it is for</a> is written from
         guesswork about who needs software like this. One note about the room, the
         surface and what you are trying to do is worth more than a donation would be,
-        because it is what the first release gets shaped by. Write to
+        because it is what the next release gets shaped by. Write to
         <a href="mailto:help@surfacecast.app">help@surfacecast.app</a>.</p>
       </div>
       <div class="card">
-        <h3>Nothing to pay, and no donate button</h3>
-        <p>Money is not what the project is short of at this stage, and a tip jar for
-        software nobody can download yet would be worse than none.</p>
+        <h3>Say what broke</h3>
+        <p>There is no update checker and the program never contacts us, so a fault on
+        your projector is invisible here unless you say so. The version is under
+        <strong>Help &gt; About</strong>; send that with what happened.</p>
       </div>
     </div>
     <div class="note">
-      <p><strong>Not for sale yet.</strong> If you want it set up for a venue, or a
+      <p><strong>No donate button.</strong> If you want it set up for a venue, or a
       fixture profile written for lights that came with no specs, write to
       <a href="mailto:help@surfacecast.app">help@surfacecast.app</a> and we will talk. That is the
       question worth answering before anything here carries a price; a tip jar is
@@ -115,7 +145,7 @@
       </div>
     </div>
     <div class="legal">
-      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <p>SurfaceCast 1.0.0 &middot; free software under the
       <a href="license.html">GNU General Public License v3 or later</a>.
       It comes with absolutely no warranty.</p>
       <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>

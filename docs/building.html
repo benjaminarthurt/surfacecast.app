@@ -22,7 +22,7 @@
 
 <div class="wrap">
   <div class="doc-layout">
-    <nav class="doc-nav"><h4>On this page</h4><ul class="doc-toc"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#what-the-script-does">What the script does</a></li><li><a href="#output">Output</a></li><li><a href="#options">Options</a></li><li><a href="#changing-the-version">Changing the version</a></li><li><a href="#running-the-steps-by-hand">Running the steps by hand</a></li><li><a href="#why-a-folder-build-not-a-single-file">Why a folder build, not a single file</a></li><li><a href="#the-build-is-unsigned">The build is unsigned</a></li><li><a href="#what-the-installer-does">What the installer does</a></li><li><a href="#notes-on-the-packaged-qt">Notes on the packaged Qt</a></li><li><a href="#where-settings-live">Where settings live</a></li><li><a href="#diagnostics">Diagnostics</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#the-website">The website</a></li></ul><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html" aria-current="page">Building</a></li><li><a href="scene-format.html">Scene file format</a></li><li><a href="settings-format.html">Settings format</a></li><li><a href="mesh-video.html">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
+    <nav class="doc-nav"><h4>On this page</h4><ul class="doc-toc"><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#what-the-script-does">What the script does</a></li><li><a href="#output">Output</a></li><li><a href="#options">Options</a></li><li><a href="#changing-the-version">Changing the version</a></li><li><a href="#running-the-steps-by-hand">Running the steps by hand</a></li><li><a href="#why-a-folder-build-not-a-single-file">Why a folder build, not a single file</a></li><li><a href="#publishing-a-release">Publishing a release</a></li><li><a href="#the-build-is-unsigned">The build is unsigned</a></li><li><a href="#what-the-installer-does">What the installer does</a></li><li><a href="#notes-on-the-packaged-qt">Notes on the packaged Qt</a></li><li><a href="#where-settings-live">Where settings live</a></li><li><a href="#diagnostics">Diagnostics</a></li><li><a href="#troubleshooting">Troubleshooting</a></li><li><a href="#the-website">The website</a></li></ul><h4>Documentation</h4><ul><li><a href="index.html">All documentation</a></li><li><a href="user-guide.html">User guide</a></li><li><a href="reference.html">Reference</a></li><li><a href="building.html" aria-current="page">Building</a></li><li><a href="scene-format.html">Scene file format</a></li><li><a href="settings-format.html">Settings format</a></li><li><a href="mesh-video.html">Mesh video performance</a></li><li><a href="notices.html">Third-party notices</a></li></ul></nav>
     <div class="doc-body">
       <h1 id="building-surfacecast-for-windows">Building SurfaceCast for Windows</h1>
 <p>One command takes a clean checkout to artifacts you can hand to someone.</p>
@@ -103,11 +103,11 @@ briefly appear; that is expected.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>SurfaceCast-0.1.0-setup.exe</code></td>
+<td><code>SurfaceCast-&lt;version&gt;-setup.exe</code></td>
 <td>The installer — this is what you give people</td>
 </tr>
 <tr>
-<td><code>SurfaceCast-0.1.0-portable.zip</code></td>
+<td><code>SurfaceCast-&lt;version&gt;-portable.zip</code></td>
 <td>No-install build; unzip and run <code>SurfaceCast.exe</code></td>
 </tr>
 <tr>
@@ -210,6 +210,62 @@ iscc build\installer.iss
 adds seconds to startup. That is the wrong trade for an application opened
 minutes before a show starts. The installer hides the folder from users anyway,
 and the portable zip is for people who want to see it.</p>
+<h2 id="publishing-a-release">Publishing a release</h2>
+<p>Builds are published as GitHub releases on the <strong>site</strong> repository,
+<code>benjaminarthurt/surfacecast.app</code>, which is public. Not the source repository,
+which is private, and not in the site tree itself: GitHub refuses any file over
+100MB, and <code>tools/publish_site.py</code> replaces the site repository's contents on
+every publish, so a binary in it would survive until the next one.</p>
+<pre><code># 1. version, in surfacecast/core/constants.py, then commit it
+# 2. tag the commit the build will come from
+git tag v1.0.0
+# 3. a full build - no -SkipTests for a release, the gate is the point
+build.bat
+# 4. the source archive and checksums over the whole release
+python tools\release.py --tag v1.0.0
+</code></pre>
+<p>That leaves four files in <code>dist\</code>, and all four go in the release:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SurfaceCast-&lt;version&gt;-setup.exe</code></td>
+<td>The installer</td>
+</tr>
+<tr>
+<td><code>SurfaceCast-&lt;version&gt;-portable.zip</code></td>
+<td>For a machine you cannot install on</td>
+</tr>
+<tr>
+<td><code>SurfaceCast-&lt;version&gt;-source.zip</code></td>
+<td><strong>Required by the licence</strong> - see below</td>
+</tr>
+<tr>
+<td><code>SHA256SUMS.txt</code></td>
+<td>Covers the other three</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-source-archive-is-not-optional">The source archive is not optional</h3>
+<p>SurfaceCast is GPL-3.0. Offering a build for download is section <strong>6(d)</strong> of
+that licence, which requires <em>equivalent access to the Corresponding Source in
+the same way through the same place at no further charge</em>. The written offer in
+<code>THIRD-PARTY-NOTICES.md</code> — source by email on request — is section <strong>6(b)</strong>,
+which covers object code conveyed <em>"in, or embodied in, a physical product"</em>. It
+does not cover a download, so an installer published without the source beside
+it would not comply.</p>
+<p><code>tools/release.py</code> builds that archive with <code>git archive</code> from a committed tree,
+and refuses a dirty working copy: an archive of uncommitted edits is not the
+corresponding source of anything that was built. Keeping the development
+repository private is fine — what the licence entitles a recipient to is the
+source for the version they have, published beside it.</p>
+<p>Push the tag (<code>git push origin v1.0.0</code>) so the release points at a commit that
+is actually in the remote.</p>
 <h2 id="the-build-is-unsigned">The build is unsigned</h2>
 <p>There is no code signing certificate involved, so on a machine that has not seen
 the installer before, Windows SmartScreen shows <em>"Windows protected your PC"</em>.
@@ -349,7 +405,7 @@ any document. Brand colors are the block at the top of
       </div>
     </div>
     <div class="legal">
-      <p>SurfaceCast 0.1.0 &middot; free software under the
+      <p>SurfaceCast 1.0.0 &middot; free software under the
       <a href="../license.html">GNU General Public License v3 or later</a>.
       It comes with absolutely no warranty.</p>
       <p>Copyright &copy; 2026 Dispatch Dataworks LLC (Benjamin Townsend, principal member) and SurfaceCast contributors.</p>
