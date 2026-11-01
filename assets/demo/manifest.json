@@ -10,7 +10,12 @@
     },
     {
       "file": "03-porch.jpg",
-      "caption": "In close. The windows are rear-projected onto fabric from inside the house and keystoned into their frames; the strobe and the smoke machine on the display in front of them run from the same program, over DMX."
+      "caption": "In close, mid-adjustment. The windows are rear-projected onto fabric from inside the house, and the grid and the layer name in the left one are SurfaceCast's aiming mode - put there to line the picture up with the opening, and driven from a phone by whoever is standing out here looking at it. The strobe and the smoke machine on the display in front run from the same program, over DMX."
     }
-  ]
+  ],
+  "video": {
+    "file": "00-show.mp4",
+    "poster": "00-show-poster.jpg",
+    "caption": "Nine seconds of it running, from a run-through in September. The two windows are the screen; the strip along the porch is following them."
+  }
 }
